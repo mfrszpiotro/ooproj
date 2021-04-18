@@ -18,6 +18,7 @@ public:
 
 private:
 	Actor* _actor;
+	//string movieTitle?????
 	unsigned int _salary;
 };
 
