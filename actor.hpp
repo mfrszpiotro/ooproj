@@ -1,13 +1,16 @@
 #ifndef ACTOR_HPP
 #define ACTOR_HPP
 #include <iostream>
+#include <vector>
 using namespace std;
 
+class Movie;
 class Actor{
 public:
 	enum class status { professional = 'p', amateur = 'a', student = 's', test = 0 };
 	enum class gender { MALE = 'M', FEMALE = 'F', NONBINARY = 'N', TEST = 0 };
 
+	Actor();
 	Actor(string, string);
 	Actor(string, string, gender, status, unsigned int, unsigned int);
 	
@@ -20,12 +23,14 @@ public:
 	gender getGender()const;
 	
 	//setters
-	void updateName(string);
-	void updateSurname(string);
-	void updateAge(unsigned int);
-	void updateHeight(unsigned int);
-	void updateStatus(status);
-	void updateGender(gender);
+	void setName(string);
+	void setSurname(string);
+	void setAge(unsigned int);
+	void setHeight(unsigned int);
+	void setStatus(status);
+	void setGender(gender);
+	void setPersonalData(string, string, gender, status,
+		unsigned int, unsigned int);
 
 	//printing
 	void printFullName()const;
@@ -36,8 +41,9 @@ private:
 	string _surname;
 	unsigned int _age;
 	unsigned int _height;
-	status _statusAct;
-	gender _genderAct;
+	status _status;
+	gender _gender;
+	//vector<Movie> movieList;
 };
 
 ostream& operator<<(ostream& out, const Actor& actor);
