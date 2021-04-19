@@ -43,7 +43,7 @@ private:
 	unsigned int _height;
 	status _status;
 	gender _gender;
-	//vector<Movie> movieList;
+	vector<Movie*> movieList;
 };
 
 ostream& operator<<(ostream& out, const Actor& actor);
