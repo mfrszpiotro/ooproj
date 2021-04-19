@@ -27,27 +27,15 @@
     <ClCompile Include="starring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="artist.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="actor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="movie.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="starring.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="animation.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="artist.hpp">
+    <ClInclude Include="actor.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

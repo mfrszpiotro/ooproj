@@ -1,7 +1,6 @@
 #include "actor.hpp"
 #include "starring.hpp"
 #include "movie.hpp"
-#include "animation.hpp"
 #include <iostream>
 
 using namespace std;
@@ -33,13 +32,5 @@ int main() {
 	frantic.removeFilmCast();
 	frantic.printFullData();
 
-	Artist docter(Artist::spec::director);
-	docter.setPersonalData("Pete", "Docter", Artist::gender::MALE, Artist::status::professional, 38, 198);
 
-	Animation insideOut;
-	insideOut += gc;
-	insideOut += bh;
-	insideOut.addArtist(docter);
-	insideOut.printFullData();
-	insideOut.printArtList();
 }

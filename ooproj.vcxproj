@@ -140,16 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="actor.cpp" />
-    <ClCompile Include="animation.cpp" />
-    <ClCompile Include="artist.cpp" />
     <ClCompile Include="movie.cpp" />
     <ClCompile Include="ooproj.cpp" />
     <ClCompile Include="starring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.hpp" />
-    <ClInclude Include="animation.hpp" />
-    <ClInclude Include="artist.hpp" />
     <ClInclude Include="movie.hpp" />
     <ClInclude Include="starring.hpp" />
   </ItemGroup>
