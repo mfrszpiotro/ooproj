@@ -1,10 +1,12 @@
 #include "actor.hpp"
 
+Actor::Actor(): _name("Test"), _surname("Testing"), _age(0), _height(0), _gender(gender::TEST), _status(status::test) {}
+
 Actor::Actor(string name, string surname):
-	_name(name), _surname(surname), _age(0), _height(0), _genderAct(gender::TEST), _statusAct(status::test) {}
+	_name(name), _surname(surname), _age(0), _height(0), _gender(gender::TEST), _status(status::test) {}
 
 Actor::Actor(string firstN, string lastN, gender g, status s, unsigned int age, unsigned int height):
-	_name(firstN), _surname(lastN), _age(age), _height(height), _genderAct(g), _statusAct(s) {}
+	_name(firstN), _surname(lastN), _age(age), _height(height), _gender(g), _status(s) {}
 
 string Actor::getName()const {
 	return _name;
@@ -19,29 +21,38 @@ unsigned int Actor::getHeight()const {
 	return _height;
 }
 Actor::status Actor::getStatus()const {
-	return _statusAct;
+	return _status;
 }
 Actor::gender Actor::getGender()const {
-	return _genderAct;
+	return _gender;
 }
 
-void Actor::updateName(string name) {
+void Actor::setName(string name) {
 	_name = name;
 }
-void Actor::updateSurname(string surname) {
+void Actor::setSurname(string surname) {
 	_surname = surname;
 }
-void Actor::updateAge(unsigned int age) {
+void Actor::setAge(unsigned int age) {
 	_age = age;
 }
-void Actor::updateHeight(unsigned int height) {
+void Actor::setHeight(unsigned int height) {
 	_height = height;
 }
-void Actor::updateStatus(status status) {
-	_statusAct = status;
+void Actor::setStatus(status status) {
+	_status = status;
 }
-void Actor::updateGender(gender gender) {
-	_genderAct = gender;
+void Actor::setGender(gender gender) {
+	_gender = gender;
+}
+void Actor::setPersonalData(string name, string surname, gender gender, status status,
+	unsigned int age, unsigned int height) {
+	_name = name;
+	_surname = surname;
+	_age = age;
+	_height = height;
+	_status = status;
+	_gender = gender;
 }
 
 void Actor::printFullName() const {
@@ -52,7 +63,7 @@ void Actor::printFullData() const {
 	cout << *this << endl;
 	cout << _age << endl;
 	cout << _height << endl;
-	switch (_statusAct) {
+	switch (_status) {
 	case status::amateur:
 		cout << "amateur" << endl;
 		break;
@@ -64,7 +75,7 @@ void Actor::printFullData() const {
 		break;
 	default: cout << "test" << endl;
 	}
-	switch (_genderAct) {
+	switch (_gender) {
 	case gender::FEMALE:
 		cout << "FEMALE" << endl;
 		break;

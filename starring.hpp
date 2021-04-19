@@ -3,23 +3,31 @@
 #include "actor.hpp"
 using namespace std;
 
+class Movie;
 class Starring{
 public:
-	Starring() : _actor(nullptr), _salary(0) {};
-	Starring(Actor* a, unsigned int salary) : _actor(a), _salary(salary) {};
+	Starring();
+	Starring(Actor*, Movie*, unsigned int); // initializes data AND adds starring to filmcast of Movie
+	~Starring(); // deletes starring from filmcast
 
 	//getters
-	Actor* getActor()const;
-	unsigned int getSalary()const;
+	Actor* getActor() const;
+	Movie* getMovie() const;
+	unsigned int getSalary() const;
 
 	//setters
 	void setActor(Actor*);
+	void setMovie(Movie*); // sets pointer to movie AND adds starring to filmcast of Movie
 	void setSalary(const unsigned int);
+
+	void printFullData() const;
 
 private:
 	Actor* _actor;
-	//string movieTitle?????
+	Movie* _movie;
 	unsigned int _salary;
 };
+
+//ostream& operator<<(ostream& out, const Starring& starring);
 
 #endif

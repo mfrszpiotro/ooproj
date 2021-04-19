@@ -1,5 +1,7 @@
 #include "movie.hpp"
 
+Movie::Movie() : _title("No title assigned!!!"), _dueDate(releaseDate()), _head(nullptr) {}
+
 Movie::Movie(const string& title) : _title(title), _dueDate(releaseDate()), _head(nullptr) {}
 
 Movie::Movie(const Movie& src) : _title(src._title), _dueDate(src._dueDate), _head(nullptr) {

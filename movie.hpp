@@ -1,9 +1,10 @@
 #ifndef MOVIE_HPP
 #define MOVIE_HPP
 #include <iostream>
-#include <list>
 #include "starring.hpp"
 using namespace std;
+
+class Starring;
 
 struct releaseDate {
 	releaseDate() : day(0), month(0), year(0) {};
@@ -27,6 +28,7 @@ struct filmCast {
 
 class Movie{
 public:
+	Movie();
 	Movie(const string&);
 	Movie(const Movie&);
 	~Movie();
@@ -34,6 +36,8 @@ public:
 	Movie& operator=(const Movie&);
 	Movie& operator+(const Starring& x);
 	Movie& operator+=(const Starring& x);
+	//Movie& operator-(const Starring& x);
+	//Movie& operator-=(const Starring& x);
 
 	//getters
 	string getTitle()const;
