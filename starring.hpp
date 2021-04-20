@@ -1,9 +1,7 @@
 #ifndef STARRING_HPP
 #define STARRING_HPP
 #include "actor.hpp"
-using namespace std;
 
-class Movie;
 class Starring{
 public:
 	Starring();

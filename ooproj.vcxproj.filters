@@ -27,6 +27,9 @@
     <ClCompile Include="starring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="director.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="movie.hpp">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="actor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="director.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

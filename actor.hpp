@@ -21,6 +21,7 @@ public:
 	unsigned int getHeight()const;
 	status getStatus()const;
 	gender getGender()const;
+	vector<Movie*> getMovieList()const;
 	
 	//setters
 	void setName(string);
@@ -29,12 +30,18 @@ public:
 	void setHeight(unsigned int);
 	void setStatus(status);
 	void setGender(gender);
-	void setPersonalData(string, string, gender, status,
-		unsigned int, unsigned int);
+	void setPersonalData(string, string, gender, status, unsigned int, unsigned int);
+
+	//managing MovieList
+	void setMovieList(vector<Movie*> ml);
+	void addMovie(Movie*);
+	void removeMovie(Movie*);
+	int findMovie(const Movie*) const;
 
 	//printing
 	void printFullName()const;
 	void printFullData()const;
+	void printMovieList()const;
 
 private:
 	string _name;
@@ -43,7 +50,7 @@ private:
 	unsigned int _height;
 	status _status;
 	gender _gender;
-	vector<Movie*> movieList;
+	vector<Movie*> _movieList;
 };
 
 ostream& operator<<(ostream& out, const Actor& actor);

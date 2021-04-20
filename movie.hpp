@@ -1,14 +1,10 @@
 #ifndef MOVIE_HPP
 #define MOVIE_HPP
-#include <iostream>
 #include "starring.hpp"
-using namespace std;
-
-class Starring;
 
 struct releaseDate {
-	releaseDate() : day(0), month(0), year(0) {};
-	releaseDate(int d, int m, int y) : day(d), month(m), year(y) {};
+	releaseDate();
+	releaseDate(int, int, int);
 
 	unsigned int day;
 	unsigned int month;
@@ -16,24 +12,23 @@ struct releaseDate {
 };
 
 struct filmCast {
-	filmCast() : next(nullptr) {};
-	~filmCast() {
-		cout << *actor.getActor() << " is about to be deleted" << endl;
-		delete next;
-	}
+	filmCast();
+	~filmCast();
 
 	Starring actor;
 	filmCast* next;
 };
 
+class Director;
+class Starring;
 class Movie{
 public:
-	Movie();
-	Movie(const string&);
-	Movie(const Movie&);
+	Movie(Director*);
+	Movie(Director*, const string&);
+	Movie(Movie&); // It is possible for director to direct exactly the same film, why not? He can do anything!
 	~Movie();
 
-	Movie& operator=(const Movie&);
+	Movie& operator=(Movie&); // Movie cannot be assigned to some other film with different director
 	Movie& operator+(const Starring& x);
 	Movie& operator+=(const Starring& x);
 	//Movie& operator-(const Starring& x);
@@ -43,6 +38,7 @@ public:
 	string getTitle()const;
 	releaseDate getReleaseDate()const;
 	filmCast* getFilmCast()const;
+	Director* getDirector()const;
 	//modifiers
 	void setTitle(const string&);
 	void setReleaseDate(const releaseDate&);
@@ -56,11 +52,14 @@ public:
 private:
 	void copyFilmCast(const Movie&);
 
+	Movie(); // Movie without director doesn't exist! The c-tor is set private and cannot be called
+	Director* _director;
 	string _title;
 	releaseDate _dueDate;
 	filmCast* _head;
-	//list<Starring> filmCast;
 };
+
+ostream& operator<<(ostream& out, const Movie& x);
 
 #endif
 

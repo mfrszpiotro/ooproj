@@ -1,4 +1,5 @@
 #include "actor.hpp"
+#include "movie.hpp"
 
 Actor::Actor(): _name("Test"), _surname("Testing"), _age(0), _height(0), _gender(gender::TEST), _status(status::test) {}
 
@@ -27,6 +28,10 @@ Actor::gender Actor::getGender()const {
 	return _gender;
 }
 
+vector<Movie*> Actor::getMovieList() const{
+	return _movieList;
+}
+
 void Actor::setName(string name) {
 	_name = name;
 }
@@ -53,6 +58,33 @@ void Actor::setPersonalData(string name, string surname, gender gender, status s
 	_height = height;
 	_status = status;
 	_gender = gender;
+}
+
+void Actor::setMovieList(vector<Movie*> ml){
+	_movieList = ml;
+}
+
+void Actor::addMovie(Movie* x){
+	_movieList.push_back(x);
+	//cout << " *** Movie " << *_movieList.back() << " has been added to the list with address: " << _movieList.back() << endl;
+}
+
+void Actor::removeMovie(Movie* x){
+	int place = findMovie(x);
+	if (place != -1) {
+		_movieList[place] = _movieList.back();
+		_movieList.pop_back();
+	}
+	else {
+		cerr << "Actor::removeMovie error: Movie does not exist on the list" << endl;
+	}
+}
+
+int Actor::findMovie(const Movie* x) const {
+	for (int i = 0; i < _movieList.size(); ++i) {
+		if (_movieList[i] == x) return i;
+	}
+	return -1;
 }
 
 void Actor::printFullName() const {
@@ -86,6 +118,13 @@ void Actor::printFullData() const {
 		cout << "NONBINARY" << endl;
 		break;
 	default: cout << "TEST" << endl;
+	}
+}
+
+void Actor::printMovieList() const{
+	for (int i = 0; i < _movieList.size(); ++i) {
+		cout << "- " << *_movieList[i] << endl;//" and its address: " << _movieList[i] << endl;
+		//cout << " *** Full data of this^ movie: " << endl; _movieList[i]->printFullData();
 	}
 }
 

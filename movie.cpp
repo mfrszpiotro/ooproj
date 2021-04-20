@@ -1,24 +1,49 @@
 #include "movie.hpp"
+#include "director.hpp"
+#include <iostream>
+using namespace std;
 
-Movie::Movie() : _title("No title assigned!!!"), _dueDate(releaseDate()), _head(nullptr) {}
+releaseDate::releaseDate() : day(0), month(0), year(0) {};
 
-Movie::Movie(const string& title) : _title(title), _dueDate(releaseDate()), _head(nullptr) {}
+releaseDate::releaseDate(int d, int m, int y) : day(d), month(m), year(y) {};
 
-Movie::Movie(const Movie& src) : _title(src._title), _dueDate(src._dueDate), _head(nullptr) {
+filmCast::filmCast() : next(nullptr) {};
+
+filmCast::~filmCast() {
+	cout << *actor.getActor() << " is about to be deleted" << endl;
+	delete next;
+}
+
+Movie::Movie(Director* dir) : _director(dir), _title("No title assigned!!!"), _dueDate(releaseDate()), _head(nullptr) {}
+
+Movie::Movie(Director* dir, const string& title) : _director(dir), _title(title), _dueDate(releaseDate()), _head(nullptr) {
+	_director->addMovie(this);
+}
+
+Movie::Movie(Movie& src) : _director(src._director), _title(src._title), _dueDate(src._dueDate), _head(nullptr) {
 	copyFilmCast(src);
+	_director->addMovie(&src);
 }
 
 Movie::~Movie() {
+	_director->removeMovie(this);
 	removeFilmCast();
 }
 
-Movie& Movie::operator=(const Movie& src){
+Movie& Movie::operator=(Movie& src){
 	if (this == &src) {
 		return *this;
 	}
-	removeFilmCast();
-	copyFilmCast(src);
-	return *this;
+	else if (_director == src._director || _director == nullptr) {
+		if(_director == src._director) removeFilmCast();
+		copyFilmCast(src);
+		_director->addMovie(&src);
+		return *this;
+	}
+	else {
+		cerr << "Movie::operator= error: you cannot assign a movie to different director. Returning LHS not modified" << endl;
+		return *this;
+	}
 }
 
 Movie& Movie::operator+(const Starring& x){
@@ -68,9 +93,11 @@ void Movie::printFilmCast(){
 }
 
 void Movie::printFullData(){
+	cout << "Directed by: " << _director->getName() << " " << _director->getSurname() << endl;
 	cout << "Title: " << _title << endl;
 	cout << "Release date: "; printReleaseDate(); cout << endl;
 	cout << "Film cast: " << endl; printFilmCast();
+	cout << "Address: " << this << endl;
 }
 
 string Movie::getTitle() const{
@@ -85,10 +112,19 @@ filmCast* Movie::getFilmCast() const{
 	return _head;
 }
 
+Director* Movie::getDirector() const{
+	return _director;
+}
+
 void Movie::setTitle(const string& x){
 	_title = x;
 }
 
 void Movie::setReleaseDate(const releaseDate& x){
 	_dueDate = x;
+}
+
+ostream& operator<<(ostream& out, const Movie& x){ // only title
+	out << x.getTitle();
+	return out;
 }

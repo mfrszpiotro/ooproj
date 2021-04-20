@@ -1,5 +1,6 @@
 #include "starring.hpp"
 #include "movie.hpp"
+using namespace std;
 
 Starring::Starring() : _actor(nullptr), _movie(nullptr), _salary(0) {};
 

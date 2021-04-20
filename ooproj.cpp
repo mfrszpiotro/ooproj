@@ -1,6 +1,7 @@
 #include "actor.hpp"
 #include "starring.hpp"
 #include "movie.hpp"
+#include "director.hpp"
 #include <iostream>
 
 using namespace std;
@@ -12,7 +13,9 @@ int main() {
 	Actor bojack("Bojack", "Horseman", Actor::gender::MALE, Actor::status::professional, 49, 190);
 	bojack.printFullData();
 
-	Movie frantic("Frantic");
+	Director scorsese("Martin", "Scorsese");
+
+	Movie frantic(&scorsese, "Frantic");
 	Starring bh(&bojack, &frantic, 10000);
 	frantic.setReleaseDate(releaseDate(10, 4, 2022));
 	frantic.printFullData();
@@ -32,5 +35,8 @@ int main() {
 	frantic.removeFilmCast();
 	frantic.printFullData();
 
+	//actor should not have ability to change the movie
 
+	cout << "Printing movie list of director: " << endl;
+	scorsese.printMovieList();
 }
