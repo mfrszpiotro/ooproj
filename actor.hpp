@@ -7,14 +7,16 @@ using namespace std;
 class Movie;
 class Actor{
 public:
-	enum class status { professional = 'p', amateur = 'a', student = 's', test = 0 };
+	enum class status { director = 'd', professional = 'p', amateur = 'a', student = 's', test = 0 };
 	enum class gender { MALE = 'M', FEMALE = 'F', NONBINARY = 'N', TEST = 0 };
 
 	Actor();
 	Actor(string, string);
 	Actor(string, string, gender, status, unsigned int, unsigned int);
+	Actor(Actor&);
+	~Actor(); //for size of _movieList remove from starrings
+	Actor& operator=(Actor&);
 	
-	//getters
 	string getName()const;
 	string getSurname()const;
 	unsigned int getAge()const;
@@ -23,7 +25,6 @@ public:
 	gender getGender()const;
 	vector<Movie*> getMovieList()const;
 	
-	//setters
 	void setName(string);
 	void setSurname(string);
 	void setAge(unsigned int);
@@ -32,18 +33,19 @@ public:
 	void setGender(gender);
 	void setPersonalData(string, string, gender, status, unsigned int, unsigned int);
 
-	//managing MovieList
 	void setMovieList(vector<Movie*> ml);
 	void addMovie(Movie*);
 	void removeMovie(Movie*);
+	void printMovieList()const;
 	int findMovie(const Movie*) const;
-
-	//printing
+	
 	void printFullName()const;
 	void printFullData()const;
-	void printMovieList()const;
 
 private:
+	void addToStarrings(Actor& x);
+	void removeFromStarrings();
+
 	string _name;
 	string _surname;
 	unsigned int _age;

@@ -1,0 +1,7 @@
+The software is supposed to mimic real relations between actors, directors and movies.
+
+•	The most important rule is that the object Movie cannot exist without its Director and, at the same time, we cannot change the Director of existing Movie (if Director of the Movie is going to be changed, we should create a new Movie)
+
+•	Director is also an Actor, he can star in some Movies. Every Actor keep track of his _movieList. It does not matter if director is starring in the Movie or directing it, _movieList will be expanded anyway.
+
+•	Movies keep track of all actors starring in it using relation class called Starring which stores address to an Actor and a Movie (can be treated as a role - it can be "empty", only describing salary and role in a Movie).

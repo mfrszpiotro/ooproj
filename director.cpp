@@ -1,10 +1,15 @@
 #include "director.hpp"
 #include "movie.hpp"
+#include "starring.hpp"
 
-Director::Director(string name, string surname) : Actor(name, surname) {};
+Director::Director() : Actor() {};
 
-Movie Director::directMovie() {
-	Movie newMovie(this, "");
-	addMovie(&newMovie);
-	return newMovie;
-};
+Director::Director(string name, string surname) : Actor(name, surname) {}
+Director::~Director(){
+}
+Director::Director(const Director&){
+}
+Director& Director::operator=(const Director&){
+	return *this;
+}
+;
