@@ -5,10 +5,12 @@ releaseDate::releaseDate() : day(0), month(0), year(0) {};
 
 releaseDate::releaseDate(int d, int m, int y) : day(d), month(m), year(y) {};
 
-Movie::Movie(Director* dir) : _director(dir), _title("No title assigned!!!"), _dueDate(releaseDate()) {}
+Movie::Movie(Director* dir) : _filmCast(), _director(dir), _title("No title assigned!!!"), _dueDate(releaseDate()) {}
 
-Movie::Movie(Director* dir, const string& title) : _director(dir), _title(title), _dueDate(releaseDate()) {
+Movie::Movie(Director* dir, const string& title) : _filmCast(0), _director(dir), _title(title), _dueDate(releaseDate()) {
 	_director->addMovie(this);
+	vector<Starring> table;
+	_filmCast = table;
 }
 
 Movie::~Movie() {
@@ -18,13 +20,15 @@ Movie::~Movie() {
 
 Movie::Movie(const Movie& src): _director(src._director), _title(src._title), _dueDate(src._dueDate) {
 	_director->addMovie(this);
+	vector<Starring> table;
+	_filmCast = table;
 	copyFilmCast(src._filmCast);
 }
 
 void Movie::removeStarring(const Starring& x){
 	int place = findStarring(x);
 	if (place != -1) {
-		_filmCast[place] = _filmCast.back();
+		_filmCast[place] = _filmCast.back(); // faulty allocation of memory probably - vector usage
 		_filmCast.pop_back();
 	}
 }
@@ -59,8 +63,13 @@ int Movie::findActor(const Actor& a){
 }
 
 void Movie::addStarring(const Starring& x){
-	Starring* newStarring = new Starring;
-	_filmCast.push_back(*newStarring);
+	Starring* newStar = new Starring(x.getRole(), x.getSalary());
+	cout << "***Printing movie filmcast: " << endl;
+	printFilmCast();
+	_filmCast.push_back(*newStar);
+	_filmCast.back().printFullData();
+	if (x.getActor() != nullptr) _filmCast.back().setActor(x.getActor());
+	if (x.getMovie() != nullptr) _filmCast.back().setMovie(x.getMovie());
 }
 
 string Movie::getTitle() const {

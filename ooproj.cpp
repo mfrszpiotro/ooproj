@@ -15,15 +15,14 @@ int main() {
 	scorsese.setPersonalData("Martin", "Scorsese", Actor::gender::MALE, Actor::status::director, 78, 168);
 
 	cout << endl << "Initial set of objects: " << endl;
-	bielenia.printFullName();
-	jakubik.printFullName();
-	kulesza.printFullName();
-	scorsese.printFullName();
+	bielenia.printFullName(); cout << endl;
+	jakubik.printFullName(); cout << endl;
+	kulesza.printFullName(); cout << endl;
+	scorsese.printFullName(); cout << endl;
 
 	cout << endl << "Creating a Movie with all of above objects: " << endl;
 	Movie irishman(&scorsese, "The Irishman");
-	Starring x;
-	irishman.addStarring(x); //this is the main problem now - how do I solve this???
-	//Starring tony(&irishman, "Tony", 20000);
+	Starring tony(&irishman, "Tony", 20000);
 	irishman.printFullData();
+	//irishman.addStarring(tony); //this is the main problem now - how do I solve this???
 }

@@ -2,37 +2,39 @@
 
 Starring::Starring() : _actor(nullptr), _movie(nullptr), _role("***no role assigned"), _salary(0) {}
 
+Starring::Starring(string r, unsigned int s) : _actor(nullptr), _movie(nullptr), _role(r), _salary(s) {}
+
 Starring::Starring(Movie* m, string r, unsigned int s): _actor(nullptr), _movie(m), _role(r), _salary(s) {
     _movie->addStarring(*this);
 }
 
 Starring::Starring(Actor* a, Movie* m, string r, unsigned int s): _actor(a), _movie(m), _role(r), _salary(s) {
-    _actor->addMovie(_movie);
-    _movie->addStarring(*this);
+    if (_movie != nullptr) _actor->addMovie(_movie);
+    if (_movie != nullptr) _movie->addStarring(*this);
 }
 
 Starring::~Starring(){
-    _actor->removeMovie(_movie);
-    _movie->removeStarring(*this);
+    if (_actor != nullptr) _actor->removeMovie(_movie);
+    if (_movie != nullptr) _movie->removeStarring(*this);
 }
 
 Starring::Starring(const Starring& x) : _actor(x._actor), _movie(x._movie), _role(x._role), _salary(x._salary) {
-    _actor->addMovie(_movie);
-    _movie->addStarring(*this);
+    if (_actor != nullptr) _actor->addMovie(_movie);
+    if (_movie != nullptr) _movie->addStarring(*this);
 }
 
 Starring Starring::operator=(Starring& x){
     if (this == &x) {
         return *this;
     }
-    _actor->removeMovie(_movie);
-    _movie->removeStarring(x);
+    if (_actor != nullptr) _actor->removeMovie(_movie);
+    if (_movie != nullptr) _movie->removeStarring(x);
     _actor = x._actor;
     _movie = x._movie;
     _role = x._role;
     _salary = x._salary;
-    _actor->addMovie(_movie);
-    _movie->addStarring(*this);
+    if (_actor != nullptr) _actor->addMovie(_movie);
+    if (_movie != nullptr) _movie->addStarring(*this);
     return *this;
 }
 
@@ -77,8 +79,14 @@ void Starring::setRole(const string r){
 }
 
 void Starring::printFullData() const{
-    cout << "Actor: "; _actor->printFullName();
-    cout << "Movie: " << _movie->getTitle() << endl;
     cout << "Role: " << _role << endl;
     cout << "Salary: " << _salary << "$" << endl;
+
+    cout << "Actor: ";
+    if(_actor!=nullptr) _actor->printFullName();
+    cout << endl;
+    cout << "Movie: ";
+    if (_movie != nullptr) cout << _movie->getTitle();
+    cout << endl;
+
 }

@@ -8,6 +8,7 @@ class Movie;
 class Starring{
 public:
 	Starring();
+	Starring(string, unsigned int);
 	Starring(Movie*, string, unsigned int); // role to be taken by some actor
 	Starring(Actor*, Movie*, string, unsigned int);
 	~Starring();

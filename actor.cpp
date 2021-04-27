@@ -5,10 +5,10 @@
 Actor::Actor(): _name("Test"), _surname("Testing"), _age(0), _height(0), _gender(gender::TEST), _status(status::test) {}
 
 Actor::Actor(string name, string surname):
-	_name(name), _surname(surname), _age(0), _height(0), _gender(gender::TEST), _status(status::test) {}
+	_movieList(), _name(name), _surname(surname), _age(0), _height(0), _gender(gender::TEST), _status(status::test) {}
 
 Actor::Actor(string firstN, string lastN, gender g, status s, unsigned int age, unsigned int height):
-	_name(firstN), _surname(lastN), _age(age), _height(height), _gender(g), _status(s) {}
+	_movieList(), _name(firstN), _surname(lastN), _age(age), _height(height), _gender(g), _status(s) {}
 
 Actor::Actor(Actor& x): 
 	_name(x._name), _surname(x._surname), _age(x._age), _height(x._height), _gender(x._gender), _status(x._status), _movieList(x._movieList){
@@ -133,7 +133,7 @@ void Actor::printMovieList() const {
 }
 
 void Actor::printFullName() const {
-	cout << *this << endl;
+	cout << *this;
 }
 
 void Actor::printFullData() const {
@@ -170,6 +170,8 @@ void Actor::printFullData() const {
 }
 
 void Actor::addToStarrings(Actor& x){
+	if (&x == nullptr) return;
+	else return; //write some code here
 }
 
 void Actor::removeFromStarrings(){
