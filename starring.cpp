@@ -88,5 +88,12 @@ void Starring::printFullData() const{
     cout << "Movie: ";
     if (_movie != nullptr) cout << _movie->getTitle();
     cout << endl;
+}
 
+ostream& operator<<(ostream& out, const Starring& starring){
+    out << starring.getActor() << 
+        " as " << starring.getRole() <<
+        " in " << starring.getMovie() << 
+        " and earns " << starring.getSalary() << "$" << endl;
+    return out;
 }

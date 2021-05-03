@@ -1,13 +1,9 @@
 #include "movie.hpp"
 #include "starring.hpp"
 
-releaseDate::releaseDate() : day(0), month(0), year(0) {};
+Movie::Movie(Director* dir) : _filmCast(), _director(dir), _title("No title assigned!!!"), _releaseDate(tm()) {}
 
-releaseDate::releaseDate(int d, int m, int y) : day(d), month(m), year(y) {};
-
-Movie::Movie(Director* dir) : _filmCast(), _director(dir), _title("No title assigned!!!"), _dueDate(releaseDate()) {}
-
-Movie::Movie(Director* dir, const string& title) : _filmCast(0), _director(dir), _title(title), _dueDate(releaseDate()) {
+Movie::Movie(Director* dir, const string& title) : _filmCast(0), _director(dir), _title(title), _releaseDate(tm()) {
 	_director->addMovie(this);
 	vector<Starring> table;
 	_filmCast = table;
@@ -18,7 +14,7 @@ Movie::~Movie() {
 	removeFilmCast();
 }
 
-Movie::Movie(const Movie& src): _director(src._director), _title(src._title), _dueDate(src._dueDate) {
+Movie::Movie(const Movie& src): _director(src._director), _title(src._title), _releaseDate(src._releaseDate) {
 	_director->addMovie(this);
 	vector<Starring> table;
 	_filmCast = table;
@@ -28,7 +24,7 @@ Movie::Movie(const Movie& src): _director(src._director), _title(src._title), _d
 void Movie::removeStarring(const Starring& x){
 	int place = findStarring(x);
 	if (place != -1) {
-		_filmCast[place] = _filmCast.back(); // faulty allocation of memory probably - vector usage
+		_filmCast[place]; // faulty allocation of memory probably - vector usage
 		_filmCast.pop_back();
 	}
 }
@@ -70,14 +66,15 @@ void Movie::addStarring(const Starring& x){
 	_filmCast.back().printFullData();
 	if (x.getActor() != nullptr) _filmCast.back().setActor(x.getActor());
 	if (x.getMovie() != nullptr) _filmCast.back().setMovie(x.getMovie());
+	delete newStar;
 }
 
 string Movie::getTitle() const {
 	return _title;
 }
 
-releaseDate Movie::getReleaseDate() const {
-	return _dueDate;
+tm Movie::getReleaseDate() const {
+	return _releaseDate;
 }
 
 vector<Starring> Movie::getFilmCast() const {
@@ -92,16 +89,18 @@ void Movie::setTitle(const string& x) {
 	_title = x;
 }
 
-void Movie::setReleaseDate(const releaseDate& x) {
-	_dueDate = x;
+void Movie::setReleaseDate(const tm& x) {
+	_releaseDate = x;
 }
 
 void Movie::printReleaseDate(){
-	if (_dueDate.day < 10) cout << "0" << _dueDate.day << ".";
-	else cout << _dueDate.day << ".";
-	if (_dueDate.month < 10) cout << "0" << _dueDate.month << ".";
-	else cout << _dueDate.month << ".";
-	cout << _dueDate.year;
+	if (_releaseDate.tm_mday < 10) cout << "0" << _releaseDate.tm_mday;
+	else cout << _releaseDate.tm_mday;
+	cout << ".";
+	if (_releaseDate.tm_mon < 10) cout << "0" << _releaseDate.tm_mon;
+	else cout << _releaseDate.tm_mon;
+	cout << ".";
+	cout << _releaseDate.tm_year;
 }
 
 void Movie::printFilmCast(){

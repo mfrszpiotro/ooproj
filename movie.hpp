@@ -2,16 +2,8 @@
 #define MOVIE_HPP
 #include "director.hpp"
 #include <iostream>
+#include <ctime>
 using namespace std;
-
-struct releaseDate { // to be changed with the chrono library C++20 features
-	releaseDate();
-	releaseDate(int, int, int);
-
-	unsigned int day;
-	unsigned int month;
-	unsigned int year;
-};
 
 class Director;
 class Starring;
@@ -23,12 +15,12 @@ public:
 	Movie(const Movie&); // copy filmcast and add Starrings to existing actors
 					
 	string getTitle()const;
-	releaseDate getReleaseDate()const;
+	tm getReleaseDate()const;
 	vector<Starring> getFilmCast()const;
 	string getDirectorName()const;
 
 	void setTitle(const string&);
-	void setReleaseDate(const releaseDate&);
+	void setReleaseDate(const tm&);
 	void addStarring(const Starring&);
 	void removeStarring(const Starring&);
 	int findStarring(const Starring&) const;
@@ -44,7 +36,7 @@ public:
 private:
 	Director* _director;
 	string _title;
-	releaseDate _dueDate;
+	tm _releaseDate;
 	vector<Starring> _filmCast;
 								// Some important rules explaining impl. of a class Movie -
 	Movie();					// 1. no c-tor:   Movie without director doesn't exist! The default c-tor is set private and cannot be called

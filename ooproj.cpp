@@ -22,7 +22,14 @@ int main() {
 
 	cout << endl << "Creating a Movie with all of above objects: " << endl;
 	Movie irishman(&scorsese, "The Irishman");
+	tm releaseDate;
+	releaseDate.tm_year = 2000;
+	releaseDate.tm_mon = 1;
+	releaseDate.tm_mday = 2;
+	irishman.setReleaseDate(releaseDate);
 	Starring tony(&irishman, "Tony", 20000);
 	irishman.printFullData();
+	cout << irishman.getFilmCast()[0];
+	cout << irishman.getFilmCast()[1];
 	//irishman.addStarring(tony); //this is the main problem now - how do I solve this???
 }
