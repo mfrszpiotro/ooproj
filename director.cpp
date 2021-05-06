@@ -1,6 +1,4 @@
 #include "director.hpp"
-#include "movie.hpp"
-#include "starring.hpp"
 
 Director::Director() : Actor() {};
 

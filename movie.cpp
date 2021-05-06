@@ -1,72 +1,83 @@
 #include "movie.hpp"
-#include "starring.hpp"
 
-Movie::Movie(Director* dir) : _filmCast(), _director(dir), _title("No title assigned!!!"), _releaseDate(tm()) {}
+Movie::Movie(Director* dir) : _head(nullptr), _filmCastSize(0), _director(dir), _title("No title assigned!!!"), _releaseDate(tm()) {}
 
-Movie::Movie(Director* dir, const string& title) : _filmCast(0), _director(dir), _title(title), _releaseDate(tm()) {
+Movie::Movie(Director* dir, const string& title) : _head(nullptr), _filmCastSize(0), _director(dir), _title(title), _releaseDate(tm()) {
 	_director->addMovie(this);
-	vector<Starring> table;
-	_filmCast = table;
 }
 
 Movie::~Movie() {
 	_director->removeMovie(this);
-	removeFilmCast();
+	removeAllElements();
 }
 
-Movie::Movie(const Movie& src): _director(src._director), _title(src._title), _releaseDate(src._releaseDate) {
+Movie::Movie(const Movie& src): _head(nullptr), _filmCastSize(0), _director(src._director), _title(src._title), _releaseDate(src._releaseDate) {
+	copyAllElements(src);
 	_director->addMovie(this);
-	vector<Starring> table;
-	_filmCast = table;
-	copyFilmCast(src._filmCast);
 }
 
-void Movie::removeStarring(const Starring& x){
-	int place = findStarring(x);
-	if (place != -1) {
-		_filmCast[place]; // faulty allocation of memory probably - vector usage
-		_filmCast.pop_back();
+void Movie::insertElement(Starring* x){
+	Movie* tmp = x->getMovie(); // maybe copy element function is needed
+	if (tmp != nullptr && tmp != this) cerr << "Error Movie:insertElement: this starring is already occupied" << endl;
+	if (x->getActor() != nullptr) {
+		if (x->getActor()->findMovie(this)) x->getActor()->addMovie(this);
+	}
+
+	element* etr = new element; // (std::nothrow)
+	if (etr == nullptr) {
+		cerr << "Movie::insertElement: Allocation not sucessful!" << endl;
+		return;
+	}
+	etr->data = x;
+	etr->data->setMovie(this);
+	etr->next = _head; // insertion at the beginning of the list 
+	_head = etr;
+	++_filmCastSize;
+}
+
+bool Movie::removeElement(Starring* x){
+	if (!findElement(x)) return false;
+	if (x->getActor() != nullptr) {
+		if (x->getActor()->findMovie(this)) x->getActor()->removeMovie(this);
+	}
+
+	element* tmp = _head;
+	if (tmp && tmp->data == x) {
+		_head = tmp->next;
+		tmp->data->setMovie(nullptr);
+		delete tmp;
+		return true;
+	}
+	else {
+		element* prev = nullptr;
+		while (tmp != nullptr && tmp->data != x) {
+			prev = tmp;
+			tmp = tmp->next;
+		}
+		if (tmp == nullptr) return false;
+		prev->next = tmp->next;
+		tmp->data->setMovie(nullptr);
+		delete tmp;
+		return false;
 	}
 }
 
-void Movie::removeActor(const Actor& a) {
-	int place = findActor(a);
-	if (place != -1) {
-		_filmCast[place] = _filmCast.back();
-		_filmCast.pop_back();
+Starring* Movie::getNthElement(int n){
+	element* etr = _head;
+	for (int i = 1; i < n && etr->next != nullptr; i++) {
+		etr = etr->next;
 	}
+	return etr->data;
 }
 
-void Movie::removeFilmCast(){
-	for (unsigned int i = 0; i < _filmCast.size(); ++i) {
-		_filmCast[i].getActor()->removeMovie(this);
+bool Movie::findElement(const Starring* x) const{
+	if (x->getMovie() == nullptr) return false;
+	element* etr = _head;
+	while (etr) {
+		if (etr->data == x) return true;
+		etr = etr->next;
 	}
-	_filmCast.clear();
-}
-
-int Movie::findStarring(const Starring& x) const{
-	for (unsigned int i = 0; i < _filmCast.size(); ++i) {
-		if (_filmCast[i] == x) return i;
-	}
-	return -1;
-}
-
-int Movie::findActor(const Actor& a){
-	for (unsigned int i = 0; i < _filmCast.size(); ++i) {
-		if (_filmCast[i].getActor()==&a) return i;
-	}
-	return -1;
-}
-
-void Movie::addStarring(const Starring& x){
-	Starring* newStar = new Starring(x.getRole(), x.getSalary());
-	cout << "***Printing movie filmcast: " << endl;
-	printFilmCast();
-	_filmCast.push_back(*newStar);
-	_filmCast.back().printFullData();
-	if (x.getActor() != nullptr) _filmCast.back().setActor(x.getActor());
-	if (x.getMovie() != nullptr) _filmCast.back().setMovie(x.getMovie());
-	delete newStar;
+	return false;
 }
 
 string Movie::getTitle() const {
@@ -77,12 +88,51 @@ tm Movie::getReleaseDate() const {
 	return _releaseDate;
 }
 
-vector<Starring> Movie::getFilmCast() const {
-	return _filmCast;
+void Movie::copyAllElements(const Movie& x){
+	element* etr = _head;
+	element* xtr = x._head;
+
+	while (xtr) {
+		Starring* copied = xtr->data;
+		element* ntr = new element;
+		if (!ntr) {
+			cerr << "Movie::copyAllElements: Allocation not successfull!" << endl;
+			break;
+		}
+		ntr->data = copied; // xtr->data;
+		ntr->data->link(ntr->data->getActor());
+		ntr->next = nullptr;
+
+		if (!_head) {
+			_head = ntr;
+		}
+		else {
+			etr->next = ntr;
+		}
+		etr = ntr; //keep track of the last element in *this
+
+		xtr = xtr->next;
+	}
+	_filmCastSize = x._filmCastSize;
+}
+
+void Movie::removeAllElements(){
+	element* etr = _head;
+	while (etr) {
+		etr = etr->next;
+		_head->data->unlink(_head->data->getActor());
+		delete _head;
+		_head = etr;
+	}
+	_filmCastSize = 0;
 }
 
 string Movie::getDirectorName() const {
 	return (_director->getName() + " " + _director->getSurname());
+}
+
+int Movie::getSize() const {
+	return _filmCastSize;
 }
 
 void Movie::setTitle(const string& x) {
@@ -103,9 +153,65 @@ void Movie::printReleaseDate(){
 	cout << _releaseDate.tm_year;
 }
 
+void Movie::copyActorStarrings(Actor* a){
+	vector<int> placements = findActorStarrings(a);
+	if (placements.empty()) {
+		cerr << "Movie::removeActorStarrings: This actor is not present in the movie!" << endl;
+		return;
+	}
+	int count = 0;
+	element* etr = _head;
+	while (etr) {
+		for (unsigned int i = 0; i < placements.size(); ++i) {
+			if (placements[i] == count) {
+				if (getNthElement(i)->getActor() == a) {
+					cout << "***Successfull search" << endl;
+					insertElement(getNthElement(i)); //copying element
+					cout << "***Successfull copy" << endl;
+					break;
+				}
+			}
+		}
+		count++;
+		etr = etr->next;
+	}
+	return;
+}
+
+void Movie::removeActorStarrings(Actor* a){
+	vector<int> placements = findActorStarrings(a);
+	if (placements.empty()) {
+		cerr << "Movie::removeActorStarrings: This actor is not present in the movie!" << endl;
+		return;
+	}
+	element* etr = _head;
+	while (etr) {
+		if (etr->data->getActor() == a) {
+			etr->data->setActor(nullptr);
+		}
+	etr = etr->next;
+	}
+}
+
+vector<int> Movie::findActorStarrings(const Actor* a) const{
+	vector<int> placements;
+	int count = 0;
+	element* etr = _head;
+	while (etr) {
+		if (etr->data->getActor() == a) {
+			placements.push_back(count);
+		}
+		count++;
+		etr = etr->next;
+	}
+	return placements;
+}
+
 void Movie::printFilmCast(){
-	for (unsigned int i = 0; i < _filmCast.size(); ++i) {
-		cout << "- " << _filmCast[i].getActor() << " as " << _filmCast[i].getRole() << endl;
+	element* tmp = _head;
+	while (tmp) {
+		cout << "- " << *tmp->data->getActor() << endl;
+		tmp = tmp->next;
 	}
 }
 
@@ -114,13 +220,6 @@ void Movie::printFullData(){
 	cout << "Title: " << _title << endl;
 	cout << "Release date: "; printReleaseDate(); cout << endl;
 	cout << "Film cast: " << endl; printFilmCast();
-}
-
-void Movie::copyFilmCast(const vector<Starring>& x) {
-	for (unsigned int i = 0; i < x.size(); ++i) {
-		_filmCast.push_back(x[i]);
-		_filmCast[i].getActor()->addMovie(this);
-	}
 }
 
 ostream& operator<<(ostream& out, const Movie& x){ // only title

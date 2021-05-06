@@ -14,8 +14,10 @@ public:
 	Actor(string, string);
 	Actor(string, string, gender, status, unsigned int, unsigned int);
 	Actor(Actor&);
-	~Actor(); //for size of _movieList remove from starrings
+	~Actor();
 	Actor& operator=(Actor&);
+	bool operator==(const Actor&) const;
+	bool operator!=(const Actor&) const;
 	
 	string getName()const;
 	string getSurname()const;
@@ -32,19 +34,21 @@ public:
 	void setStatus(status);
 	void setGender(gender);
 	void setPersonalData(string, string, gender, status, unsigned int, unsigned int);
-
 	void setMovieList(vector<Movie*> ml);
+
 	void addMovie(Movie*);
 	void removeMovie(Movie*);
-	void printMovieList()const;
 	int findMovie(const Movie*) const;
 	
+	void printMovieList()const;
 	void printFullName()const;
 	void printFullData()const;
 
 private:
-	void addToStarrings(Actor& x);
-	void removeFromStarrings();
+	void connectWithAll(vector<Movie*>);
+	void disconnectWithAll(vector<Movie*>);
+	void connectWith(Movie*);
+	void disconnectWith(Movie*);
 
 	string _name;
 	string _surname;

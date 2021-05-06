@@ -1,8 +1,6 @@
 #ifndef STARRING_HPP
 #define STARRING_HPP
 #include "actor.hpp"
-#include "movie.hpp"
-using namespace std;
 
 class Movie;
 class Starring{
@@ -13,7 +11,7 @@ public:
 	Starring(Actor*, Movie*, string, unsigned int);
 	~Starring();
 	Starring(const Starring&);
-	Starring operator= (Starring&);
+	Starring operator= (const Starring&);
 	bool operator==(const Starring&) const;
 
 	Actor* getActor() const;
@@ -21,14 +19,27 @@ public:
 	string getRole() const;
 	unsigned int getSalary() const;
 
-	void setActor(Actor*);
+	void link(Actor*);
+	void link(Movie*);
+	void link(Actor*, Movie*);
+	void unlink(Actor*);
+	void unlink(Movie*);
+	void unlink(Actor*, Movie*);
 	void setMovie(Movie*);
+	void setActor(Actor*);
 	void setSalary(const unsigned int);
 	void setRole(const string);
 
 	void printFullData() const;
 
 private:
+	void connectWith(Actor*);
+	void connectWith(Movie*);
+	void connectWith(Actor*, Movie*);
+	void disconnectWith(Actor*);
+	void disconnectWith(Movie*);
+	void disconnectWith(Actor*, Movie*);
+
 	Actor* _actor;
 	Movie* _movie;
 	string _role;
