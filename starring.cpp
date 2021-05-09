@@ -108,19 +108,17 @@ void Starring::printFullData() const{
     cout << "Role: " << _role << endl;
     cout << "Salary: " << _salary << "$" << endl;
 
-    cout << "Actor: ";
-    if (_actor != nullptr) _actor->printFullName();
-    cout << endl;
-    cout << "Movie: ";
-    if (_movie != nullptr) cout << _movie->getTitle();
-    cout << endl;
+    if (_actor != nullptr) cout << "Actor: " << *_actor << endl;
+    if (_movie != nullptr) cout << "Movie: " << _movie->getTitle() << endl;
 }
 
-void Starring::connectWith(Actor* a){
+void Starring::connectWith(Actor* a) {
+    if (a == nullptr || _movie == nullptr) return;
     if(a->findMovie(_movie) == -1) a->addMovie(_movie);
 }
 
 void Starring::connectWith(Movie* m){
+    if (m == nullptr) return;
     m->insertElement(this); //didnt think about it much, watch out
 }
 
@@ -130,7 +128,7 @@ void Starring::connectWith(Actor* a, Movie* m){
 }
 
 void Starring::disconnectWith(Actor* a){
-    if (_movie->getSize() <= 0) return;
+    if (_movie == nullptr || _movie->getSize() <= 0) return;
     int placement = a->findMovie(_movie);
     if (placement <= (_movie->getSize() - 1) && placement >= 0) {
         a->removeMovie(_movie);
@@ -149,16 +147,16 @@ void Starring::disconnectWith(Actor* a, Movie* m){
 }
 
 ostream& operator<<(ostream& out, const Starring& starring){
-    if(starring.getMovie() == nullptr && starring.getActor() == nullptr)
-         out << "Role: " << starring.getRole() <<
-        " to earn: " << starring.getSalary() << "$" << endl;
+    if (starring.getMovie() == nullptr && starring.getActor() == nullptr)
+        out << "Role: " << starring.getRole() <<
+        " to earn: " << starring.getSalary() << "$";
     else if (starring.getActor() == nullptr)
-         out << "Role: " << starring.getRole() <<
-        " in " << *starring.getMovie() << 
-        " to earn: " << starring.getSalary() << "$" << endl;
-    else out << starring.getActor() <<
+        out << "Role: " << starring.getRole() <<
+        " in " << *starring.getMovie() <<
+        " to earn: " << starring.getSalary() << "$";
+    else out << *starring.getActor() <<
         " as " << starring.getRole() <<
         " in " << *starring.getMovie() <<
-        " and earns " << starring.getSalary() << "$" << endl;
+        " and earns " << starring.getSalary() << "$";
     return out;
 }

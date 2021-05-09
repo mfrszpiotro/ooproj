@@ -18,7 +18,7 @@ Movie::Movie(const Movie& src): _head(nullptr), _filmCastSize(0), _director(src.
 
 void Movie::insertElement(Starring* x){
 	Movie* tmp = x->getMovie(); // maybe copy element function is needed
-	if (tmp != nullptr && tmp != this) cerr << "Error Movie:insertElement: this starring is already occupied" << endl;
+	if (tmp != nullptr && tmp != this) cerr << "Movie:insertElement: this starring is already occupied" << endl;
 	if (x->getActor() != nullptr) {
 		if (x->getActor()->findMovie(this)) x->getActor()->addMovie(this);
 	}
@@ -120,7 +120,7 @@ void Movie::removeAllElements(){
 	element* etr = _head;
 	while (etr) {
 		etr = etr->next;
-		_head->data->unlink(_head->data->getActor());
+		if(_head->data->getActor() != nullptr) _head->data->unlink(_head->data->getActor());
 		delete _head;
 		_head = etr;
 	}
@@ -155,10 +155,7 @@ void Movie::printReleaseDate(){
 
 void Movie::copyActorStarrings(Actor* a){
 	vector<int> placements = findActorStarrings(a);
-	if (placements.empty()) {
-		cerr << "Movie::removeActorStarrings: This actor is not present in the movie!" << endl;
-		return;
-	}
+	if (placements.empty())	return;
 	int count = 0;
 	element* etr = _head;
 	while (etr) {
@@ -180,10 +177,7 @@ void Movie::copyActorStarrings(Actor* a){
 
 void Movie::removeActorStarrings(Actor* a){
 	vector<int> placements = findActorStarrings(a);
-	if (placements.empty()) {
-		cerr << "Movie::removeActorStarrings: This actor is not present in the movie!" << endl;
-		return;
-	}
+	if (placements.empty()) return;
 	element* etr = _head;
 	while (etr) {
 		if (etr->data->getActor() == a) {
@@ -210,7 +204,7 @@ vector<int> Movie::findActorStarrings(const Actor* a) const{
 void Movie::printFilmCast(){
 	element* tmp = _head;
 	while (tmp) {
-		cout << "- " << *tmp->data->getActor() << endl;
+		cout << "- " << *tmp->data << endl;
 		tmp = tmp->next;
 	}
 }
