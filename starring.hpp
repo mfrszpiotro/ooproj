@@ -22,13 +22,14 @@ public:
 	void link(Actor*);
 	void link(Movie*);
 	void link(Actor*, Movie*);
-	void unlink(Actor*);
-	void unlink(Movie*);
-	void unlink(Actor*, Movie*);
+	void unlinkActor();
+	void unlinkMovie();
+	void unlink();
 	void setMovie(Movie*);
 	void setActor(Actor*);
-	void setSalary(const unsigned int);
 	void setRole(const string);
+	void setSalary(const unsigned int);
+	void raiseSalary(const unsigned int);
 
 	void printFullData() const;
 

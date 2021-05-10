@@ -145,15 +145,15 @@ void Actor::printMovieList() const {
 	}
 }
 
-void Actor::connectWithAll(vector<Movie*> x){
-	for (unsigned int i = 0; i < x.size(); ++i) {
-		addMovie(x[i]);
+void Actor::connectWithAll(vector<Movie*>& ml){
+	for (unsigned int i = 0; i < ml.size(); ++i) {
+		addMovie(ml[i]);
 	}
 }
 
-void Actor::disconnectWithAll(vector<Movie*> x){
-	for (unsigned int i = 0; i < x.size(); ++i) {
-		removeMovie(x[i]);
+void Actor::disconnectWithAll(vector<Movie*>& ml){
+	for (unsigned int i = 0; i < ml.size(); ++i) {
+		removeMovie(ml[i]);
 	}
 }
 

@@ -45,8 +45,8 @@ public:
 	void printFullData()const;
 
 private:
-	void connectWithAll(vector<Movie*>);
-	void disconnectWithAll(vector<Movie*>);
+	void connectWithAll(vector<Movie*>&);
+	void disconnectWithAll(vector<Movie*>&);
 	void connectWith(Movie*);
 	void disconnectWith(Movie*);
 

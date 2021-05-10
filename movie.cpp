@@ -94,20 +94,22 @@ void Movie::copyAllElements(const Movie& x){
 
 	while (xtr) {
 		Starring* copied = xtr->data;
+		Starring* newStar = new Starring(copied->getRole(), copied->getSalary());
 		element* ntr = new element;
-		if (!ntr) {
+		if (!ntr || !newStar) {
 			cerr << "Movie::copyAllElements: Allocation not successfull!" << endl;
 			break;
 		}
-		ntr->data = copied; // xtr->data;
-		ntr->data->link(ntr->data->getActor());
+		newStar->link(xtr->data->getActor());
+		newStar->link(this);
+		ntr->data = newStar;
 		ntr->next = nullptr;
 
 		if (!_head) {
 			_head = ntr;
 		}
 		else {
-			etr->next = ntr;
+			//etr->next = ntr;
 		}
 		etr = ntr; //keep track of the last element in *this
 
@@ -120,7 +122,7 @@ void Movie::removeAllElements(){
 	element* etr = _head;
 	while (etr) {
 		etr = etr->next;
-		if(_head->data->getActor() != nullptr) _head->data->unlink(_head->data->getActor());
+		if(_head->data->getActor() != nullptr) _head->data->unlinkActor();
 		delete _head;
 		_head = etr;
 	}

@@ -23,7 +23,7 @@ Starring::Starring(const Starring& x) : _actor(x._actor), _movie(x._movie), _rol
 
 Starring Starring::operator=(const Starring& x){
     if (this == &x) return *this;
-    unlink(x._actor, x._movie);
+    unlink();
     link(x._actor, x._movie);
     setRole(x._role);
     setSalary(x._salary);
@@ -59,20 +59,20 @@ void Starring::link(Actor* a, Movie* m){
     _movie = m;
 }
 
-void Starring::unlink(Actor* a){
-    disconnectWith(a);
+void Starring::unlinkActor(){
+    disconnectWith(_actor);
     _actor = nullptr;
 }
 
-void Starring::unlink(Movie* m){
-    disconnectWith(m);
+void Starring::unlinkMovie(){
+    disconnectWith(_movie);
     _actor = nullptr;
 }
 
-void Starring::unlink(Actor* a, Movie* m){
-    disconnectWith(a);
+void Starring::unlink(){
+    disconnectWith(_actor);
     _actor = nullptr;
-    disconnectWith(m);
+    disconnectWith(_movie);
     _actor = nullptr;
 }
 
@@ -98,6 +98,10 @@ string Starring::getRole() const{
 
 void Starring::setSalary(const unsigned int s) {
     _salary = s;
+}
+
+void Starring::raiseSalary(const unsigned int s){
+    _salary += s;
 }
 
 void Starring::setRole(const string r){
@@ -128,7 +132,8 @@ void Starring::connectWith(Actor* a, Movie* m){
 }
 
 void Starring::disconnectWith(Actor* a){
-    if (_movie == nullptr || _movie->getSize() <= 0) return;
+    if (_actor == nullptr || _movie == nullptr || _movie->getSize() <= 0) return;
+    if (_movie->findActorStarrings(a).size() > 1) return;
     int placement = a->findMovie(_movie);
     if (placement <= (_movie->getSize() - 1) && placement >= 0) {
         a->removeMovie(_movie);
@@ -153,6 +158,10 @@ ostream& operator<<(ostream& out, const Starring& starring){
     else if (starring.getActor() == nullptr)
         out << "Role: " << starring.getRole() <<
         " in " << *starring.getMovie() <<
+        " to earn: " << starring.getSalary() << "$";
+    else if (starring.getMovie() == nullptr)
+        out << *starring.getActor() <<
+        " as: " << starring.getRole() <<
         " to earn: " << starring.getSalary() << "$";
     else out << *starring.getActor() <<
         " as " << starring.getRole() <<
