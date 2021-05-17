@@ -5,6 +5,9 @@
 #include <iostream>
 using namespace std;
 
+void printReleaseDate(tm&);
+void printMovieList(vector<Movie*>);
+
 int main() {
 	cout << "Object-oriented programming project - tests:" << endl;
 	Actor bielenia("Bartosz", "Bielenia", Actor::gender::MALE, Actor::status::professional, 29, 175);
@@ -75,11 +78,18 @@ int main() {
 		irishman.findActorStarrings(&kulesza).empty())
 		cout << "Error" << endl;
 	else cout << "Good" << endl;
+	cout << endl << "State of Actors at the moment: " << endl;
+	cout << bielenia << endl;
+	printMovieList(bielenia.getMovieList());
+	cout << jakubik << endl;
+	printMovieList(jakubik.getMovieList());
+	cout << kulesza << endl;
+	printMovieList(kulesza.getMovieList());
 
 	cout << endl << "Accessing Starrings in copied Movie by MovieList (raising salary of one actor): ";
-	vector<int> pBielenia = irishman.findActorStarrings(&bielenia);
+	vector<Starring*> pBielenia = irishman.findActorStarrings(&bielenia);
 	for (unsigned int i = 0; i < pBielenia.size(); ++i) {
-		irishman.getNthElement(pBielenia[i])->raiseSalary(50000);
+		pBielenia[i]->raiseSalary(50000);
 	}
 	cout << endl << "State of Irishman Movie at the moment: " << endl;
 	cout << irishman << endl;
@@ -88,16 +98,22 @@ int main() {
 	cout << endl << "Copy c-tors and assignment operators examples on Godmother Movie:" << endl;
 	cout << godmother << endl;
 	godmother.printFilmCast();
-	/*Actor zietek(bielenia);
+	Actor zietek(bielenia);
 	zietek.setName("Tomasz");
 	zietek.setSurname("Zietek");
 	zietek.setAge(31);
-	zietek.printFullData();
-	zietek.printMovieList();
-	godmother.printFullData();*/
+	vector<Starring*> pZietek = godmother.findActorStarrings(&zietek);
+	for (unsigned int i = 0; i < pZietek.size(); ++i) {
+		pZietek[i]->setRole("Pablo");
+	}
+	pZietek = irishman.findActorStarrings(&zietek);
+	for (unsigned int i = 0; i < pZietek.size(); ++i) {
+		pZietek[i]->setRole("Pablo");
+	}
+	cout << zietek << endl;
+	printMovieList(zietek.getMovieList());
 
 	Actor stenka("Danuta", "Stenka", Actor::gender::FEMALE, Actor::status::professional, 54, 171);
-	// ^to be changed after testing Actor class
 	Starring elle(janet);
 	elle.setRole("Elle");
 	elle.unlinkActor();
@@ -112,6 +128,25 @@ int main() {
 	julie.setRole("Julie");
 	julie.setSalary(400000);
 	julie.unlinkActor();
+
+	cout << endl << "State of Movies at the moment: " << endl;
+	cout << endl << godmother << endl;
+	godmother.printFilmCast();
+	cout << endl << irishman << endl;
+	irishman.printFilmCast();
+
+	cout << endl << "State of Actors at the moment: " << endl;
+	cout << endl << bielenia << endl;
+	printMovieList(bielenia.getMovieList());
+	cout << jakubik << endl;
+	printMovieList(jakubik.getMovieList());
+	cout << kulesza << endl;
+	printMovieList(kulesza.getMovieList());
+	cout << zietek << endl;
+	printMovieList(zietek.getMovieList());
+	cout << stenka << endl;
+	printMovieList(stenka.getMovieList());
+
 	cout << endl << godmother << endl;
 	godmother.printFilmCast();
 }

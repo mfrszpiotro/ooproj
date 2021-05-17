@@ -29,12 +29,12 @@ public:
 
 	void insertElement(Starring*);
 	bool removeElement(Starring*);
-	Starring* getNthElement(int);
+	Starring getNthElement(int);
 	bool findElement(const Starring*) const;
 
-	void copyActorStarrings(Actor*);
+	void copyActorStarrings(Actor* _this, Actor* a);
 	void removeActorStarrings(Actor*);
-	std::vector<int> findActorStarrings(const Actor*)const;
+	std::vector<Starring*> findActorStarrings(const Actor*)const;
 
 	void printFilmCast();
 	

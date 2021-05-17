@@ -62,12 +62,12 @@ bool Movie::removeElement(Starring* x){
 	}
 }
 
-Starring* Movie::getNthElement(int n){
+Starring Movie::getNthElement(int n){
 	element* etr = _head;
 	for (int i = 1; i < n && etr->next != nullptr; i++) {
 		etr = etr->next;
 	}
-	return etr->data;
+	return *etr->data;
 }
 
 bool Movie::findElement(const Starring* x) const{
@@ -145,52 +145,33 @@ void Movie::setReleaseDate(const tm& x) {
 	_releaseDate = x;
 }
 
-void Movie::copyActorStarrings(Actor* a){
-	std::vector<int> placements = findActorStarrings(a);
-	if (placements.empty())	return;
-	int count = 0;
-	element* etr = _head;
-	while (etr) {
-		for (unsigned int i = 0; i < placements.size(); ++i) {
-			if (placements[i] == count) {
-				if (getNthElement(i)->getActor() == a) {
-					std::cout << "***Successfull search" << std::endl;
-					insertElement(getNthElement(i)); //copying element
-					std::cout << "***Successfull copy" << std::endl;
-					break;
-				}
-			}
-		}
-		count++;
-		etr = etr->next;
+void Movie::copyActorStarrings(Actor* _this, Actor* a){
+	std::vector<Starring*> foundStars = findActorStarrings(a);
+	for (unsigned int i = 0; i < foundStars.size(); ++i) {
+		Starring* copy = foundStars[i];
+		Starring* newStar = new Starring(copy->getRole(), copy->getSalary());
+		newStar->link(_this, this);
 	}
-	return;
 }
 
 void Movie::removeActorStarrings(Actor* a){
-	std::vector<int> placements = findActorStarrings(a);
-	if (placements.empty()) return;
-	element* etr = _head;
-	while (etr) {
-		if (etr->data->getActor() == a) {
-			etr->data->setActor(nullptr);
-		}
-	etr = etr->next;
-	}
+	/*std::vector<Starring*> foundStars = findActorStarrings(a);
+	while (foundStars.size() != 0){
+		foundStars.back()->unlink();
+		delete foundStars.back();
+	}*/
 }
 
-std::vector<int> Movie::findActorStarrings(const Actor* a) const{
-	std::vector<int> placements;
-	int count = 0;
+std::vector<Starring*> Movie::findActorStarrings(const Actor* a) const{
+	std::vector<Starring*> foundStars;
 	element* etr = _head;
 	while (etr) {
-		if (etr->data->getActor() == a) {
-			placements.push_back(count);
+		if (*etr->data->getActor() == *a) {
+			foundStars.push_back(etr->data);
 		}
-		count++;
 		etr = etr->next;
 	}
-	return placements;
+	return foundStars;
 }
 
 void Movie::printFilmCast(){

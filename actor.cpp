@@ -11,26 +11,26 @@ Actor::Actor(const char* firstN, const char* lastN, gender g, status s, unsigned
 	_movieList(), _name(firstN), _surname(lastN), _age(age), _height(height), _gender(g), _status(s) {}
 
 Actor::Actor(Actor& x): 
-	_name(x._name), _surname(x._surname), _age(x._age), _height(x._height), _gender(x._gender), _status(x._status), _movieList(x._movieList){
-	connectWithAll(x._movieList);
+	_name(x._name), _surname(x._surname), _age(x._age), _height(x._height), _gender(x._gender), _status(x._status), _movieList(){
+	connectWithAll(x);
 }
 
 Actor::~Actor() {
-	disconnectWithAll(_movieList);
+	disconnectWithAll();
 }
 
 Actor& Actor::operator=(Actor& x) {
 	if (&x == this) {
 		return *this;
 	}
-	disconnectWithAll(_movieList);
+	disconnectWithAll();
 	_name = x._name;
 	_surname = x._surname;
 	_age = x._age;
 	_height=x._height;
 	_gender = x._gender;
 	_status = x._status;
-	connectWithAll(x._movieList);
+	connectWithAll(x);
 	return *this;
 }
 
@@ -115,7 +115,6 @@ void Actor::setMovieList(std::vector<Movie*> ml) {
 }
 
 void Actor::addMovie(Movie* x) {
-	connectWith(x);
 	_movieList.push_back(x);
 }
 
@@ -123,7 +122,7 @@ void Actor::removeMovie(Movie* x) {
 	int place = findMovie(x);
 	if (place != -1) {
 		_movieList[place] = _movieList.back();
-		disconnectWith(x);
+		x->removeActorStarrings(this);
 		_movieList.pop_back();
 	}
 	else {
@@ -138,27 +137,20 @@ int Actor::findMovie(const Movie* x) const {
 	return -1;
 }
 
-void Actor::connectWithAll(std::vector<Movie*>& ml){
-	for (unsigned int i = 0; i < ml.size(); ++i) {
-		addMovie(ml[i]);
+void Actor::connectWithAll(Actor& a){
+	unsigned int size = a.getMovieList().size();
+	for (unsigned int i = 0; i < size; ++i) {
+		Movie* toConnect = a.getMovieList()[i];
+		toConnect->copyActorStarrings(this, &a);
 	}
 }
 
-void Actor::disconnectWithAll(std::vector<Movie*>& ml){
-	for (unsigned int i = 0; i < ml.size(); ++i) {
-		removeMovie(ml[i]);
+void Actor::disconnectWithAll(){
+	unsigned int size = _movieList.size();
+	for (unsigned int i = 0; i < size; ++i) {
+		Movie* toDisconnect = _movieList[i];
+		toDisconnect->removeActorStarrings(this);
 	}
-}
-
-void Actor::connectWith(Movie* m){
-	//find actor and copy its starrings (that means: find all actors)
-	//if there is none like this actor in movie m, print message that there is no role for this actor
-	m->copyActorStarrings(this);
-}
-
-void Actor::disconnectWith(Movie* m){
-	//find actor and remove it from its roles (that means: find all actors)
-	m->removeActorStarrings(this);
 }
 
 std::ostream& operator<<(std::ostream& out, const Actor& actor) {

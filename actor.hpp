@@ -46,10 +46,8 @@ public:
 	int findMovie(const Movie*) const;
 
 private:
-	void connectWithAll(std::vector<Movie*>&);
-	void disconnectWithAll(std::vector<Movie*>&);
-	void connectWith(Movie*);
-	void disconnectWith(Movie*);
+	void connectWithAll(Actor&);
+	void disconnectWithAll();
 
 	const char* _name;
 	const char* _surname;

@@ -98,6 +98,7 @@ void Starring::unlinkActor(){
         return;
     }
     cerr << "Starring::disconnectWith error" << endl;
+    cerr << "Starring this: " << *this << endl;
     _actor = nullptr;
 }
 
