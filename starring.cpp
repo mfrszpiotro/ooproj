@@ -1,24 +1,42 @@
 #include "starring.hpp"
 #include "movie.hpp"
+using namespace std;
 
 Starring::Starring() : _actor(nullptr), _movie(nullptr), _role("***no role assigned"), _salary(0) {}
 
-Starring::Starring(string r, unsigned int s) : _actor(nullptr), _movie(nullptr), _role(r), _salary(s) {}
+Starring::Starring(const char* r, unsigned int s) : _actor(nullptr), _movie(nullptr), _role(r), _salary(s) {}
 
-Starring::Starring(Movie* m, string r, unsigned int s): _actor(nullptr), _movie(m), _role(r), _salary(s) {
-    connectWith(m);
+Starring::Starring(Movie* m, const char* r, unsigned int s): _actor(nullptr), _movie(m), _role(r), _salary(s) {
+    if (m == nullptr) return;
+    m->insertElement(this); //didnt think about it much, watch out
 }
 
-Starring::Starring(Actor* a, Movie* m, string r, unsigned int s): _actor(a), _movie(m), _role(r), _salary(s) {
-    connectWith(a, m);
+Starring::Starring(Actor* a, Movie* m, const char* r, unsigned int s): _actor(a), _movie(m), _role(r), _salary(s) {
+    if (a == nullptr || _movie == nullptr) return;
+    if (a->findMovie(_movie) == -1) a->addMovie(_movie);
+
+    if (m == nullptr) return;
+    m->insertElement(this); //didnt think about it much, watch out
 }
 
 Starring::~Starring(){
-    disconnectWith(_actor,_movie);
+    _movie->removeElement(this); //didnt think about it much, watch out
+    if (_actor == nullptr || _movie == nullptr || _movie->getSize() <= 0) return;
+    if (_movie->findActorStarrings(_actor).size() > 1) return;
+    int placement = _actor->findMovie(_movie);
+    if (placement <= (_movie->getSize() - 1) && placement >= 0) {
+        _actor->removeMovie(_movie);
+        return;
+    }
+    cerr << "Starring::disconnectWith error" << endl;
 }
 
 Starring::Starring(const Starring& x) : _actor(x._actor), _movie(x._movie), _role(x._role), _salary(x._salary) {
-    connectWith(x._actor,x._movie);
+    if (_actor == nullptr || _movie == nullptr) return;
+    if (_actor->findMovie(_movie) == -1) _actor->addMovie(_movie);
+
+    if (_movie == nullptr) return;
+    _movie->insertElement(this); //didnt think about it much, watch out
 }
 
 Starring Starring::operator=(const Starring& x){
@@ -31,11 +49,10 @@ Starring Starring::operator=(const Starring& x){
 }
 
 bool Starring::operator==(const Starring& x) const{
-    if (_role == x._role &&
+    return _role == x._role &&
         _salary == x._salary &&
         _actor == x._actor &&
-        _movie == x._movie) return true;
-    else return false;
+        _movie == x._movie;
 }
 
 unsigned int Starring::getSalary()const {
@@ -43,36 +60,63 @@ unsigned int Starring::getSalary()const {
 }
 
 void Starring::link(Actor* a){
-    connectWith(a);
+    if (a == nullptr || _movie == nullptr) {
+        _actor = a;
+        return;
+    }
+    if (a->findMovie(_movie) == -1) a->addMovie(_movie);
     _actor = a;
 }
 
 void Starring::link(Movie* m){
-    connectWith(m);
+    if (m == nullptr){
+        _movie = m;
+        return;
+    }
+    m->insertElement(this); //didnt think about it much, watch out
     _movie = m;
 }
 
 void Starring::link(Actor* a, Movie* m){
-    connectWith(a);
-    _actor = a;
-    connectWith(m);
-    _movie = m;
+    link(a);
+    link(m);
 }
 
 void Starring::unlinkActor(){
-    disconnectWith(_actor);
+    if (_actor == nullptr || _movie == nullptr || _movie->getSize() <= 0){
+        _actor = nullptr;
+        return;
+    }
+    if (_movie->findActorStarrings(_actor).size() > 1) {
+        _actor = nullptr;
+        return;
+    };
+    int placement = _actor->findMovie(_movie);
+    if (placement <= (_movie->getSize() - 1) && placement >= 0) {
+        _actor->removeMovie(_movie);
+        _actor = nullptr;
+        return;
+    }
+    cerr << "Starring::disconnectWith error" << endl;
     _actor = nullptr;
 }
 
 void Starring::unlinkMovie(){
-    disconnectWith(_movie);
+    _movie->removeElement(this); //didnt think about it much, watch out
     _actor = nullptr;
 }
 
 void Starring::unlink(){
-    disconnectWith(_actor);
+    if (_actor == nullptr || _movie == nullptr || _movie->getSize() <= 0) return;
+    if (_movie->findActorStarrings(_actor).size() > 1) return;
+    int placement = _actor->findMovie(_movie);
+    if (placement <= (_movie->getSize() - 1) && placement >= 0) {
+        _actor->removeMovie(_movie);
+        return;
+    }
+    cerr << "Starring::disconnectWith error" << endl;
     _actor = nullptr;
-    disconnectWith(_movie);
+    _movie->removeElement(this); //didnt think about it much, watch out
     _actor = nullptr;
 }
 
@@ -92,7 +136,7 @@ Movie* Starring::getMovie() const{
     return _movie;
 }
 
-string Starring::getRole() const{
+const char* Starring::getRole() const{
     return _role;
 }
 
@@ -104,54 +148,11 @@ void Starring::raiseSalary(const unsigned int s){
     _salary += s;
 }
 
-void Starring::setRole(const string r){
+void Starring::setRole(const char* r){
     _role = r;
 }
 
-void Starring::printFullData() const{
-    cout << "Role: " << _role << endl;
-    cout << "Salary: " << _salary << "$" << endl;
-
-    if (_actor != nullptr) cout << "Actor: " << *_actor << endl;
-    if (_movie != nullptr) cout << "Movie: " << _movie->getTitle() << endl;
-}
-
-void Starring::connectWith(Actor* a) {
-    if (a == nullptr || _movie == nullptr) return;
-    if(a->findMovie(_movie) == -1) a->addMovie(_movie);
-}
-
-void Starring::connectWith(Movie* m){
-    if (m == nullptr) return;
-    m->insertElement(this); //didnt think about it much, watch out
-}
-
-void Starring::connectWith(Actor* a, Movie* m){
-    connectWith(a);
-    connectWith(m);
-}
-
-void Starring::disconnectWith(Actor* a){
-    if (_actor == nullptr || _movie == nullptr || _movie->getSize() <= 0) return;
-    if (_movie->findActorStarrings(a).size() > 1) return;
-    int placement = a->findMovie(_movie);
-    if (placement <= (_movie->getSize() - 1) && placement >= 0) {
-        a->removeMovie(_movie);
-        return;
-    }
-    cerr << "Starring::disconnectWith error" << endl;
-}
-
-void Starring::disconnectWith(Movie* m){
-    m->removeElement(this); //didnt think about it much, watch out
-}
-
-void Starring::disconnectWith(Actor* a, Movie* m){
-    disconnectWith(a);
-    disconnectWith(m);
-}
-
-ostream& operator<<(ostream& out, const Starring& starring){
+std::ostream& operator<<(std::ostream& out, const Starring& starring){
     if (starring.getMovie() == nullptr && starring.getActor() == nullptr)
         out << "Role: " << starring.getRole() <<
         " to earn: " << starring.getSalary() << "$";

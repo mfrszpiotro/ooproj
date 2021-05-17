@@ -1,3 +1,10 @@
+/*
+* Author: Marcel Piotrowski
+* Description:  Class Movie represents the real movie with its director and actors pointers in it.
+*				It cannot exist without its Director and we cannot change the Director of existing
+*				Movie (in that case, we should create a new movie). Movies keep all actors starring
+*				in this object using pointers to Starring objects.
+*/
 #ifndef MOVIE_HPP
 #define MOVIE_HPP
 #include "director.hpp"
@@ -8,16 +15,16 @@ class Starring;
 class Movie{
 public:
 	Movie(Director*);
-	Movie(Director*, const string&);
+	Movie(Director*, const char*);
 	~Movie();
 	Movie(const Movie&);
 					
-	string getTitle()const;
+	std::string getTitle()const;
 	tm getReleaseDate()const;
-	string getDirectorName()const;
+	std::string getDirectorName()const;
 	int getSize()const;
 
-	void setTitle(const string&);
+	void setTitle(const char*);
 	void setReleaseDate(const tm&);
 
 	void insertElement(Starring*);
@@ -27,11 +34,9 @@ public:
 
 	void copyActorStarrings(Actor*);
 	void removeActorStarrings(Actor*);
-	vector<int> findActorStarrings(const Actor*)const;
+	std::vector<int> findActorStarrings(const Actor*)const;
 
-	void printReleaseDate();
 	void printFilmCast();
-	void printFullData();
 	
 private:
 	struct element{
@@ -41,7 +46,7 @@ private:
 	element* _head;
 	int _filmCastSize;
 	Director* _director;
-	string _title;
+	const char* _title;
 	tm _releaseDate;
 
 	void copyAllElements(const Movie& src);
@@ -51,7 +56,7 @@ private:
 	Movie& operator=(Movie&);
 };
 
-ostream& operator<<(ostream& out, const Movie& x);
+std::ostream& operator<<(std::ostream& out, const Movie& x);
 
 #endif
 

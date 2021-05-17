@@ -2,11 +2,11 @@
 
 Director::Director() : Actor() {};
 
-Director::Director(string name, string surname) : Actor(name, surname) {}
+Director::Director(const char* name, const char* surname) : Actor(name, surname) {}
 Director::~Director(){
-	vector<Movie*> movieList = getMovieList();
+	std::vector<Movie*> movieList = getMovieList();
 	for (unsigned int i = 0; i < movieList.size(); ++i) {
-		cout << movieList[i] << " in array: " << i << endl;
+		std::cout << movieList[i] << " in array: " << i << std::endl;
 	}
 }
 Director::Director(const Director&){

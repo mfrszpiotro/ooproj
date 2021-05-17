@@ -1,12 +1,13 @@
 #include "actor.hpp"
 #include "movie.hpp"
+using namespace std;
 
 Actor::Actor(): _name("Test"), _surname("Testing"), _age(0), _height(0), _gender(gender::TEST), _status(status::test) {}
 
-Actor::Actor(string name, string surname):
+Actor::Actor(const char* name, const char* surname):
 	_movieList(), _name(name), _surname(surname), _age(0), _height(0), _gender(gender::TEST), _status(status::test) {}
 
-Actor::Actor(string firstN, string lastN, gender g, status s, unsigned int age, unsigned int height):
+Actor::Actor(const char* firstN, const char* lastN, gender g, status s, unsigned int age, unsigned int height):
 	_movieList(), _name(firstN), _surname(lastN), _age(age), _height(height), _gender(g), _status(s) {}
 
 Actor::Actor(Actor& x): 
@@ -34,26 +35,24 @@ Actor& Actor::operator=(Actor& x) {
 }
 
 bool Actor::operator==(const Actor& x) const {
-	if (_name == x._name &&
-		_surname == x._surname &&
-		_age == x._age &&
-		_height == x._height &&
-		_status == x._status &&
-		_gender == x._gender &&
-		_movieList == x._movieList) return true;
-	return false;
+	return	_name == x._name &&
+			_surname == x._surname &&
+			_age == x._age &&
+			_height == x._height &&
+			_status == x._status &&
+			_gender == x._gender &&
+			_movieList == x._movieList;
 }
 
 bool Actor::operator!=(const Actor& x) const {
-	if (*this == x) return false;
-	return true;
+	return !(*this == x);
 }
 
-string Actor::getName()const {
+std::string Actor::getName()const {
 	return _name;
 }
 
-string Actor::getSurname()const {
+std::string Actor::getSurname()const {
 	return _surname;
 }
 
@@ -73,11 +72,11 @@ Actor::gender Actor::getGender()const {
 	return _gender;
 }
 
-void Actor::setName(string name) {
+void Actor::setName(const char* name) {
 	_name = name;
 }
 
-void Actor::setSurname(string surname) {
+void Actor::setSurname(const char* surname) {
 	_surname = surname;
 }
 
@@ -97,7 +96,7 @@ void Actor::setGender(gender gender) {
 	_gender = gender;
 }
 
-void Actor::setPersonalData(string name, string surname, gender gender, status status,
+void Actor::setPersonalData(const char* name, const char* surname, gender gender, status status,
 	unsigned int age, unsigned int height) {
 	_name = name;
 	_surname = surname;
@@ -107,11 +106,11 @@ void Actor::setPersonalData(string name, string surname, gender gender, status s
 	_gender = gender;
 }
 
-vector<Movie*> Actor::getMovieList() const {
+std::vector<Movie*> Actor::getMovieList() const {
 	return _movieList;
 }
 
-void Actor::setMovieList(vector<Movie*> ml) {
+void Actor::setMovieList(std::vector<Movie*> ml) {
 	_movieList = ml;
 }
 
@@ -128,7 +127,7 @@ void Actor::removeMovie(Movie* x) {
 		_movieList.pop_back();
 	}
 	else {
-		cerr << "Actor::removeMovie error" << endl;
+		std::cerr << "Actor::removeMovie error" << std::endl;
 	}
 }
 
@@ -139,19 +138,13 @@ int Actor::findMovie(const Movie* x) const {
 	return -1;
 }
 
-void Actor::printMovieList() const {
-	for (unsigned int i = 0; i < _movieList.size(); ++i) {
-		cout << "- " << *_movieList[i] << endl;
-	}
-}
-
-void Actor::connectWithAll(vector<Movie*>& ml){
+void Actor::connectWithAll(std::vector<Movie*>& ml){
 	for (unsigned int i = 0; i < ml.size(); ++i) {
 		addMovie(ml[i]);
 	}
 }
 
-void Actor::disconnectWithAll(vector<Movie*>& ml){
+void Actor::disconnectWithAll(std::vector<Movie*>& ml){
 	for (unsigned int i = 0; i < ml.size(); ++i) {
 		removeMovie(ml[i]);
 	}
@@ -168,44 +161,7 @@ void Actor::disconnectWith(Movie* m){
 	m->removeActorStarrings(this);
 }
 
-void Actor::printFullName() const {
-	cout << *this;
-}
-
-void Actor::printFullData() const {
-	cout << *this << endl;
-	cout << _age << endl;
-	cout << _height << endl;
-	switch (_status) {
-	case status::amateur:
-		cout << "amateur" << endl;
-		break;
-	case status::student:
-		cout << "student" << endl;
-		break;
-	case status::professional:
-		cout << "professional" << endl;
-		break;
-	case status::director:
-		cout << "director" << endl;
-		break;
-	default: cout << "test" << endl;
-	}
-	switch (_gender) {
-	case gender::FEMALE:
-		cout << "FEMALE" << endl;
-		break;
-	case gender::MALE:
-		cout << "MALE" << endl;
-		break;
-	case gender::NONBINARY:
-		cout << "NONBINARY" << endl;
-		break;
-	default: cout << "TEST" << endl;
-	}
-}
-
-ostream& operator<<(ostream& out, const Actor& actor) { // only for full name
+std::ostream& operator<<(std::ostream& out, const Actor& actor) {
 	out << actor.getName() << " " << actor.getSurname();
 	return out;
 }
