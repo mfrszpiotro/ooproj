@@ -1,4 +1,5 @@
 #include "movie.hpp"
+using namespace std;
 
 Movie::Movie(Director* dir) : _head(nullptr), _filmCastSize(0), _director(dir), _title("No title assigned!!!"), _releaseDate(tm()) {}
 
@@ -38,7 +39,9 @@ void Movie::insertElement(Starring* x){
 bool Movie::removeElement(Starring* x){
 	if (!findElement(x)) return false;
 	if (x->getActor() != nullptr) {
-		if (x->getActor()->findMovie(this)) x->getActor()->removeMovie(this);
+		if (x->getActor()->findMovie(this)) {
+			x->getActor()->removeMovie(this);
+		}
 	}
 
 	element* tmp = _head;
@@ -46,6 +49,7 @@ bool Movie::removeElement(Starring* x){
 		_head = tmp->next;
 		tmp->data->setMovie(nullptr);
 		delete tmp;
+		--_filmCastSize;
 		return true;
 	}
 	else {
@@ -58,7 +62,8 @@ bool Movie::removeElement(Starring* x){
 		prev->next = tmp->next;
 		tmp->data->setMovie(nullptr);
 		delete tmp;
-		return false;
+		--_filmCastSize;
+		return true;
 	}
 }
 
@@ -123,7 +128,7 @@ void Movie::removeAllElements(){
 	while (etr) {
 		etr = etr->next;
 		if(_head->data->getActor() != nullptr) _head->data->unlinkActor();
-		delete _head;
+		removeElement(_head->data);
 		_head = etr;
 	}
 	_filmCastSize = 0;
@@ -157,8 +162,10 @@ void Movie::copyActorStarrings(Actor* _this, Actor* a){
 void Movie::removeActorStarrings(Actor* a){
 	/*std::vector<Starring*> foundStars = findActorStarrings(a);
 	while (foundStars.size() != 0){
-		foundStars.back()->unlink();
+		foundStars.back()->setActor(nullptr);
+		foundStars.back()->setMovie(nullptr);
 		delete foundStars.back();
+		foundStars.pop_back();
 	}*/
 }
 

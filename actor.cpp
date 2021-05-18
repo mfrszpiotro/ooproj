@@ -125,9 +125,6 @@ void Actor::removeMovie(Movie* x) {
 		x->removeActorStarrings(this);
 		_movieList.pop_back();
 	}
-	else {
-		std::cerr << "Actor::removeMovie error" << std::endl;
-	}
 }
 
 int Actor::findMovie(const Movie* x) const {
@@ -151,6 +148,7 @@ void Actor::disconnectWithAll(){
 		Movie* toDisconnect = _movieList[i];
 		toDisconnect->removeActorStarrings(this);
 	}
+	_movieList.clear();
 }
 
 std::ostream& operator<<(std::ostream& out, const Actor& actor) {

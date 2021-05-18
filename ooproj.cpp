@@ -146,9 +146,9 @@ int main() {
 	printMovieList(zietek.getMovieList());
 	cout << stenka << endl;
 	printMovieList(stenka.getMovieList());
-
-	cout << endl << godmother << endl;
-	godmother.printFilmCast();
+	
+	cout << endl << "Testing director characteristics: " << endl;
+	printMovieList(scorsese.getMovieList());
 }
 
 void printReleaseDate(tm& date) {

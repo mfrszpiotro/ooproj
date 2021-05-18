@@ -28,7 +28,7 @@ Starring::~Starring(){
         _actor->removeMovie(_movie);
         return;
     }
-    cerr << "Starring::disconnectWith error" << endl;
+    cerr << "Starring::destructor error" << endl;
 }
 
 Starring::Starring(const Starring& x) : _actor(x._actor), _movie(x._movie), _role(x._role), _salary(x._salary) {
@@ -91,14 +91,7 @@ void Starring::unlinkActor(){
         _actor = nullptr;
         return;
     };
-    int placement = _actor->findMovie(_movie);
-    if (placement <= (_movie->getSize() - 1) && placement >= 0) {
-        _actor->removeMovie(_movie);
-        _actor = nullptr;
-        return;
-    }
-    cerr << "Starring::disconnectWith error" << endl;
-    cerr << "Starring this: " << *this << endl;
+    _actor->removeMovie(_movie);
     _actor = nullptr;
 }
 
@@ -108,17 +101,8 @@ void Starring::unlinkMovie(){
 }
 
 void Starring::unlink(){
-    if (_actor == nullptr || _movie == nullptr || _movie->getSize() <= 0) return;
-    if (_movie->findActorStarrings(_actor).size() > 1) return;
-    int placement = _actor->findMovie(_movie);
-    if (placement <= (_movie->getSize() - 1) && placement >= 0) {
-        _actor->removeMovie(_movie);
-        return;
-    }
-    cerr << "Starring::disconnectWith error" << endl;
-    _actor = nullptr;
-    _movie->removeElement(this); //didnt think about it much, watch out
-    _actor = nullptr;
+    unlinkActor();
+    unlinkMovie();
 }
 
 void Starring::setMovie(Movie* m){
