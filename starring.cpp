@@ -23,7 +23,7 @@ Starring::~Starring(){
     _movie->removeElement(this); //didnt think about it much, watch out
     if (_actor == nullptr || _movie == nullptr || _movie->getSize() <= 0) return;
     if (_movie->findActorStarrings(_actor).size() > 1) return;
-    int placement = _actor->findMovie(_movie);
+    unsigned int placement = _actor->findMovie(_movie);
     if (placement <= (_movie->getSize() - 1) && placement >= 0) {
         _actor->removeMovie(_movie);
         return;

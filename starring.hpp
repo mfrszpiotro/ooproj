@@ -1,8 +1,8 @@
-/*
+/**
 * Author: Marcel Piotrowski
 * Description:  Class Starring is a relation class responsible for connecting
-				Actor object with Movie object using pointers. It can be treated as a Role -
-				it can be "empty", only describing salary and role in a Movie.
+*				Actor object with Movie object using pointers. It can be treated as a Role -
+*				it can be "empty", only describing salary and role in a Movie.
 */
 #ifndef STARRING_HPP
 #define STARRING_HPP

@@ -1,4 +1,4 @@
-/*
+/**
 * Author: Marcel Piotrowski
 * Description:  Class Actor is an object representing real movie actor. It keeps track
 *				of its movieList (it have pointers to its movies).

@@ -1,3 +1,7 @@
+/**
+* Author: Marcel Piotrowski
+* Description: Driver program for testing the whole OOP project.
+*/
 #include "actor.hpp"
 #include "starring.hpp"
 #include "director.hpp"
@@ -7,6 +11,7 @@ using namespace std;
 
 void printReleaseDate(tm&);
 void printMovieList(vector<Movie*>);
+void printFilmCast(vector<Starring*>);
 
 int main() {
 	cout << "Object-oriented programming project - tests:" << endl;
@@ -51,7 +56,7 @@ int main() {
 	cout << janet << endl;
 	cout << endl << "Movie with filmcast: " << endl;
 	cout << godmother << endl;
-	godmother.printFilmCast();
+	printFilmCast(godmother.getFilmCast());
 
 	cout << endl << "Copying this Movie and changing its characteristics: " << endl;
 	Movie irishman(godmother);
@@ -61,11 +66,11 @@ int main() {
 	due.tm_year = 2019;
 	irishman.setReleaseDate(due);
 	cout << irishman << endl;
-	irishman.printFilmCast();
+	printFilmCast(irishman.getFilmCast());
 
 	cout << endl << "State of Godmother Movie at the moment: " << endl;
 	cout << godmother << endl;
-	godmother.printFilmCast();
+	printFilmCast(godmother.getFilmCast());
 	cout << endl << "Error if Starrings created at the beginning can be found in Irishman" << endl;
 	if (irishman.findElement(&ace) ||
 		irishman.findElement(&tommy) ||
@@ -93,11 +98,11 @@ int main() {
 	}
 	cout << endl << "State of Irishman Movie at the moment: " << endl;
 	cout << irishman << endl;
-	irishman.printFilmCast();
+	printFilmCast(irishman.getFilmCast());
 
 	cout << endl << "Copy c-tors and assignment operators examples on Godmother Movie:" << endl;
 	cout << godmother << endl;
-	godmother.printFilmCast();
+	printFilmCast(godmother.getFilmCast());
 	Actor zietek(bielenia);
 	zietek.setName("Tomasz");
 	zietek.setSurname("Zietek");
@@ -121,7 +126,7 @@ int main() {
 	cout << endl << elle << endl;
 	cout << janet << endl;
 	cout << godmother << endl;
-	godmother.printFilmCast();
+	printFilmCast(godmother.getFilmCast());
 
 	Starring julie("Role", 0);
 	julie = janet;
@@ -131,9 +136,9 @@ int main() {
 
 	cout << endl << "State of Movies at the moment: " << endl;
 	cout << endl << godmother << endl;
-	godmother.printFilmCast();
+	printFilmCast(godmother.getFilmCast());
 	cout << endl << irishman << endl;
-	irishman.printFilmCast();
+	printFilmCast(irishman.getFilmCast());
 
 	cout << endl << "State of Actors at the moment: " << endl;
 	cout << endl << bielenia << endl;
@@ -166,9 +171,9 @@ int main() {
 
 	cout << endl << "Filmcast of both of the Brian's Palma movies: " << endl;
 	cout << *palma.getMovieList()[0] << endl;
-	palma.getMovieList()[0]->printFilmCast();
+	printFilmCast(palma.getMovieList()[0]->getFilmCast());
 	cout << *palma.getMovieList()[1] << endl;
-	palma.getMovieList()[1]->printFilmCast();
+	printFilmCast(palma.getMovieList()[1]->getFilmCast());
 
 	cout << endl << "State of Actors at the moment: " << endl;
 	cout << endl << bielenia << endl;
@@ -189,7 +194,7 @@ int main() {
 	cout << komasa << endl;
 	printMovieList(komasa.getMovieList());
 
-	cout << endl << "One of Actors state at the moment: " << endl;
+	cout << endl << "One of the Actors state at the moment: " << endl;
 	cout << stenka << endl;
 	printMovieList(stenka.getMovieList());
 }
@@ -205,6 +210,12 @@ void printReleaseDate(tm& date) {
 }
 
 void printMovieList(vector<Movie*> list) {
+	for (unsigned int i = 0; i < list.size(); ++i) {
+		std::cout << "- " << *list[i] << std::endl;
+	}
+}
+
+void printFilmCast(vector<Starring*> list) {
 	for (unsigned int i = 0; i < list.size(); ++i) {
 		std::cout << "- " << *list[i] << std::endl;
 	}

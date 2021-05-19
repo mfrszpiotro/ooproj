@@ -1,4 +1,4 @@
-/*
+/**
 * Author: Marcel Piotrowski
 * Description:  Class Movie represents the real movie with its director and actors pointers in it.
 *				It cannot exist without its Director and we cannot change the Director of existing
@@ -22,7 +22,8 @@ public:
 	std::string getTitle()const;
 	tm getReleaseDate()const;
 	std::string getDirectorName()const;
-	int getSize()const;
+	unsigned int getSize()const;
+	std::vector<Starring*> getFilmCast()const;
 
 	void setTitle(const char*);
 	void setReleaseDate(const tm&);
@@ -36,19 +37,13 @@ public:
 	void removeActorStarrings(Actor*);
 	std::vector<Starring*> findActorStarrings(const Actor*)const;
 
-	void printFilmCast();
 	void copyAllElements(const Movie& src);
 	void removeAllElements();
 private:
-	struct element{
-		Starring* data = nullptr;
-		element* next = nullptr;
-	};
-	element* _head;
-	unsigned int _filmCastSize;
 	Director* _director;
 	std::string _title;
 	tm _releaseDate;
+	std::vector<Starring*> _filmCast;
 
 	Movie();					
 	Movie& operator=(Movie&);
