@@ -147,8 +147,51 @@ int main() {
 	cout << stenka << endl;
 	printMovieList(stenka.getMovieList());
 	
-	cout << endl << "Testing director characteristics: " << endl;
+	cout << endl << "Changing name of director: " << endl;
 	printMovieList(scorsese.getMovieList());
+	scorsese.setPersonalData("Pawel", "Pawlikowski", Actor::gender::MALE, Actor::status::director, 54, 191);
+	cout << irishman << endl;
+	cout << godmother << endl;
+
+	cout << endl << "Copy c-tor of director: " << endl;
+	Director palma(scorsese);
+	palma.setPersonalData("Brian", "De Palma", Actor::gender::MALE, Actor::status::director, 76, 180);
+	cout << palma << endl;
+	printMovieList(palma.getMovieList());
+
+	cout << endl << "It is very convenient to change movie from the Director perspective: " << endl;
+	palma.getMovieList()[0]->setTitle("Casino Royale");
+	palma.getMovieList()[1]->setTitle("The Room");
+	printMovieList(palma.getMovieList());
+
+	cout << endl << "Filmcast of both of the Brian's Palma movies: " << endl;
+	cout << *palma.getMovieList()[0] << endl;
+	palma.getMovieList()[0]->printFilmCast();
+	cout << *palma.getMovieList()[1] << endl;
+	palma.getMovieList()[1]->printFilmCast();
+
+	cout << endl << "State of Actors at the moment: " << endl;
+	cout << endl << bielenia << endl;
+	printMovieList(bielenia.getMovieList());
+	cout << jakubik << endl;
+	printMovieList(jakubik.getMovieList());
+	cout << kulesza << endl;
+	printMovieList(kulesza.getMovieList());
+	cout << zietek << endl;
+	printMovieList(zietek.getMovieList());
+	cout << stenka << endl;
+	printMovieList(stenka.getMovieList());
+
+	cout << endl << "Assignment operator of director: " << endl;
+	Director komasa;
+	komasa = palma;
+	komasa.setPersonalData("Jan", "Komasa", Actor::gender::MALE, Actor::status::director, 39, 180);
+	cout << komasa << endl;
+	printMovieList(komasa.getMovieList());
+
+	cout << endl << "One of Actors state at the moment: " << endl;
+	cout << stenka << endl;
+	printMovieList(stenka.getMovieList());
 }
 
 void printReleaseDate(tm& date) {

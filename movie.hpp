@@ -15,7 +15,7 @@ class Starring;
 class Movie{
 public:
 	Movie(Director*);
-	Movie(Director*, const char*);
+	Movie(Director*, std::string);
 	~Movie();
 	Movie(const Movie&);
 					
@@ -37,20 +37,18 @@ public:
 	std::vector<Starring*> findActorStarrings(const Actor*)const;
 
 	void printFilmCast();
-	
+	void copyAllElements(const Movie& src);
+	void removeAllElements();
 private:
 	struct element{
 		Starring* data = nullptr;
 		element* next = nullptr;
 	};
 	element* _head;
-	int _filmCastSize;
+	unsigned int _filmCastSize;
 	Director* _director;
-	const char* _title;
+	std::string _title;
 	tm _releaseDate;
-
-	void copyAllElements(const Movie& src);
-	void removeAllElements();
 
 	Movie();					
 	Movie& operator=(Movie&);

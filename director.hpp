@@ -13,8 +13,12 @@ public:
 	Director();
 	Director(const char*, const char*);
 	~Director(); // deletes director, its movies and movies' starrings (last one: modifies movieLists of actors)
-	Director(const Director&); // deep copy of director, its movies and movies' starrings (last one: modifies portfolios of existing actors)
-	Director& operator=(const Director&); // -||- with deleting director before
+	Director(Director&); // deep copy of director, its movies and movies' starrings (last one: modifies portfolios of existing actors)
+	Director& operator=(Director&); // -||- with deleting director before
+
+private:
+	void copyAll(Director&);
+	void deleteAll();
 };
 
 #endif

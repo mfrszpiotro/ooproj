@@ -3,7 +3,7 @@ using namespace std;
 
 Movie::Movie(Director* dir) : _head(nullptr), _filmCastSize(0), _director(dir), _title("No title assigned!!!"), _releaseDate(tm()) {}
 
-Movie::Movie(Director* dir, const char* title) : _head(nullptr), _filmCastSize(0), _director(dir), _title(title), _releaseDate(tm()) {
+Movie::Movie(Director* dir, string title) : _head(nullptr), _filmCastSize(0), _director(dir), _title(title), _releaseDate(tm()) {
 	_director->addMovie(this);
 }
 
@@ -173,6 +173,7 @@ std::vector<Starring*> Movie::findActorStarrings(const Actor* a) const{
 	std::vector<Starring*> foundStars;
 	element* etr = _head;
 	while (etr) {
+		if (etr->data->getActor() == nullptr) return foundStars;
 		if (*etr->data->getActor() == *a) {
 			foundStars.push_back(etr->data);
 		}
