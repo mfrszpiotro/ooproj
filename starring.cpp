@@ -28,7 +28,6 @@ Starring::~Starring(){
         _actor->removeMovie(_movie);
         return;
     }
-    throw "~Starring: destructor error";
 }
 
 Starring::Starring(const Starring& x) : _actor(x._actor), _movie(x._movie), _role(x._role), _salary(x._salary) {
@@ -85,7 +84,7 @@ void Starring::unlinkActor(){
 }
 
 void Starring::unlinkMovie(){
-    _movie->removeElement(this); //didnt think about it much, watch out
+    _movie->removeElement(this);
     _actor = nullptr;
 }
 
