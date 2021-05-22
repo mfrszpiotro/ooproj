@@ -1,9 +1,11 @@
 #include "movie.hpp"
+#include "director.hpp"
+#include "starring.hpp"
 using namespace std;
 
 Movie::Movie(Director* dir) : _filmCast(), _director(dir), _title("No title assigned!!!"), _releaseDate(tm()) {}
 
-Movie::Movie(Director* dir, string title) : _filmCast(), _director(dir), _title(title), _releaseDate(tm()) {
+Movie::Movie(Director* dir, const string& title) : _filmCast(), _director(dir), _title(title), _releaseDate(tm()) {
 	_director->addMovie(this);
 }
 
@@ -45,7 +47,7 @@ bool Movie::removeElement(Starring* x){
 	return false;
 }
 
-Starring Movie::getNthElement(int n){
+Starring Movie::getNthElement(int n) {
 	//set range (except.)
 	return *_filmCast[n];
 }
@@ -56,14 +58,6 @@ bool Movie::findElement(const Starring* x) const{
 		if (_filmCast[i] == x) return true;
 	}
 	return false;
-}
-
-std::string Movie::getTitle() const {
-	return _title;
-}
-
-tm Movie::getReleaseDate() const {
-	return _releaseDate;
 }
 
 void Movie::copyAllElements(const Movie& x){
@@ -81,26 +75,6 @@ void Movie::removeAllElements(){
 		_filmCast.back()->unlinkActor();
 		removeElement(_filmCast.back());
 	}
-}
-
-std::string Movie::getDirectorName() const {
-	return (_director->getName() + " " + _director->getSurname());
-}
-
-unsigned int Movie::getSize() const {
-	return _filmCast.size();
-}
-
-std::vector<Starring*> Movie::getFilmCast() const {
-	return _filmCast;
-}
-
-void Movie::setTitle(const char* x) {
-	_title = x;
-}
-
-void Movie::setReleaseDate(const tm& x) {
-	_releaseDate = x;
 }
 
 void Movie::copyActorStarrings(Actor* _this, Actor* a){
@@ -131,6 +105,10 @@ std::vector<Starring*> Movie::findActorStarrings(const Actor* a) const{
 		}
 	}
 	return foundStars;
+}
+
+string Movie::getDirectorName() const {
+	return (_director->getName() + " " + _director->getSurname());
 }
 
 std::ostream& operator<<(std::ostream& out, const Movie& x){

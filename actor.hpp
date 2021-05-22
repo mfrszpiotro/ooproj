@@ -16,8 +16,8 @@ public:
 	enum class gender { MALE = 'M', FEMALE = 'F', NONBINARY = 'N', TEST = 0 };
 
 	Actor();
-	Actor(const char*, const char*);
-	Actor(const char*, const char*, gender, status, unsigned int, unsigned int);
+	Actor(const std::string&, const std::string&);
+	Actor(const std::string&, const std::string&, gender, status, unsigned int, unsigned int);
 	Actor(Actor&);
 	~Actor();
 	Actor& operator=(Actor&);
@@ -32,13 +32,13 @@ public:
 	gender getGender()const;
 	std::vector<Movie*> getMovieList()const;
 	
-	void setName(const char*);
-	void setSurname(const char*);
+	void setName(const std::string&);
+	void setSurname(const std::string&);
 	void setAge(unsigned int);
 	void setHeight(unsigned int);
 	void setStatus(status);
 	void setGender(gender);
-	void setPersonalData(const char*, const char*, gender, status, unsigned int, unsigned int);
+	void setPersonalData(const std::string&, const std::string&, gender, status, unsigned int, unsigned int);
 	void setMovieList(std::vector<Movie*> ml);
 
 	void addMovie(Movie*);
@@ -49,8 +49,8 @@ private:
 	void connectWithAll(Actor&);
 	void disconnectWithAll();
 
-	const char* _name;
-	const char* _surname;
+	std::string _name;
+	std::string _surname;
 	unsigned int _age;
 	unsigned int _height;
 	status _status;
@@ -59,5 +59,89 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& out, const Actor& actor);
+
+inline bool Actor::operator==(const Actor& x) const {
+	return	_name == x._name &&
+		_surname == x._surname &&
+		_age == x._age &&
+		_height == x._height &&
+		_status == x._status &&
+		_gender == x._gender &&
+		_movieList == x._movieList;
+}
+
+inline bool Actor::operator!=(const Actor& x) const {
+	return !(*this == x);
+}
+
+inline void Actor::setPersonalData(const std::string& name, const std::string& surname, gender gender, status status,
+	unsigned int age, unsigned int height) {
+	_name = name;
+	_surname = surname;
+	_age = age;
+	_height = height;
+	_status = status;
+	_gender = gender;
+}
+
+inline std::vector<Movie*> Actor::getMovieList() const {
+	return _movieList;
+}
+
+inline void Actor::setMovieList(std::vector<Movie*> ml) {
+	_movieList = ml;
+}
+
+inline void Actor::addMovie(Movie* x) {
+	_movieList.push_back(x);
+}
+
+inline std::string Actor::getName()const {
+	return _name;
+}
+
+inline std::string Actor::getSurname()const {
+	return _surname;
+}
+
+inline unsigned int Actor::getAge() const {
+	return _age;
+}
+
+inline unsigned int Actor::getHeight()const {
+	return _height;
+}
+
+inline Actor::status Actor::getStatus()const {
+	return _status;
+}
+
+inline Actor::gender Actor::getGender()const {
+	return _gender;
+}
+
+inline void Actor::setName(const std::string& name) {
+	_name = name;
+}
+
+inline void Actor::setSurname(const std::string& surname) {
+	_surname = surname;
+}
+
+inline void Actor::setAge(unsigned int age) {
+	_age = age;
+}
+
+inline void Actor::setHeight(unsigned int height) {
+	_height = height;
+}
+
+inline void Actor::setStatus(status status) {
+	_status = status;
+}
+
+inline void Actor::setGender(gender gender) {
+	_gender = gender;
+}
 
 #endif

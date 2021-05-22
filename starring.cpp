@@ -4,23 +4,23 @@ using namespace std;
 
 Starring::Starring() : _actor(nullptr), _movie(nullptr), _role("***no role assigned"), _salary(0) {}
 
-Starring::Starring(const char* r, unsigned int s) : _actor(nullptr), _movie(nullptr), _role(r), _salary(s) {}
+Starring::Starring(const string& r, unsigned int s) : _actor(nullptr), _movie(nullptr), _role(r), _salary(s) {}
 
-Starring::Starring(Movie* m, const char* r, unsigned int s): _actor(nullptr), _movie(m), _role(r), _salary(s) {
+Starring::Starring(Movie* m, const string& r, unsigned int s): _actor(nullptr), _movie(m), _role(r), _salary(s) {
     if (m == nullptr) return;
-    m->insertElement(this); //didnt think about it much, watch out
+    m->insertElement(this);
 }
 
-Starring::Starring(Actor* a, Movie* m, const char* r, unsigned int s): _actor(a), _movie(m), _role(r), _salary(s) {
+Starring::Starring(Actor* a, Movie* m, const string& r, unsigned int s): _actor(a), _movie(m), _role(r), _salary(s) {
     if (a == nullptr || _movie == nullptr) return;
     if (a->findMovie(_movie) == -1) a->addMovie(_movie);
 
     if (m == nullptr) return;
-    m->insertElement(this); //didnt think about it much, watch out
+    m->insertElement(this);
 }
 
 Starring::~Starring(){
-    _movie->removeElement(this); //didnt think about it much, watch out
+    _movie->removeElement(this);
     if (_actor == nullptr || _movie == nullptr || _movie->getSize() <= 0) return;
     if (_movie->findActorStarrings(_actor).size() > 1) return;
     unsigned int placement = _actor->findMovie(_movie);
@@ -36,7 +36,7 @@ Starring::Starring(const Starring& x) : _actor(x._actor), _movie(x._movie), _rol
     if (_actor->findMovie(_movie) == -1) _actor->addMovie(_movie);
 
     if (_movie == nullptr) return;
-    _movie->insertElement(this); //didnt think about it much, watch out
+    _movie->insertElement(this);
 }
 
 Starring Starring::operator=(const Starring& x){
@@ -46,17 +46,6 @@ Starring Starring::operator=(const Starring& x){
     setRole(x._role);
     setSalary(x._salary);
     return *this;
-}
-
-bool Starring::operator==(const Starring& x) const{
-    return _role == x._role &&
-        _salary == x._salary &&
-        _actor == x._actor &&
-        _movie == x._movie;
-}
-
-unsigned int Starring::getSalary()const {
-    return _salary;
 }
 
 void Starring::link(Actor* a){
@@ -73,7 +62,7 @@ void Starring::link(Movie* m){
         _movie = m;
         return;
     }
-    m->insertElement(this); //didnt think about it much, watch out
+    m->insertElement(this);
     _movie = m;
 }
 
@@ -103,38 +92,6 @@ void Starring::unlinkMovie(){
 void Starring::unlink(){
     unlinkActor();
     unlinkMovie();
-}
-
-void Starring::setMovie(Movie* m){
-    _movie = m;
-}
-
-void Starring::setActor(Actor* a){
-    _actor = a;
-}
-
-Actor* Starring::getActor()const {
-    return _actor;
-}
-
-Movie* Starring::getMovie() const{
-    return _movie;
-}
-
-const char* Starring::getRole() const{
-    return _role;
-}
-
-void Starring::setSalary(const unsigned int s) {
-    _salary = s;
-}
-
-void Starring::raiseSalary(const unsigned int s){
-    _salary += s;
-}
-
-void Starring::setRole(const char* r){
-    _role = r;
 }
 
 std::ostream& operator<<(std::ostream& out, const Starring& starring){

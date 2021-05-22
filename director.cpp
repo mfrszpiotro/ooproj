@@ -5,7 +5,7 @@ using namespace std;
 
 Director::Director() : Actor() {};
 
-Director::Director(const char* name, const char* surname) : Actor(name, surname) {}
+Director::Director(const string& name, const string& surname) : Actor(name, surname) {}
 
 Director::~Director(){
 	deleteAll();

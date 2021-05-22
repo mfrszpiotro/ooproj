@@ -7,15 +7,17 @@
 */
 #ifndef MOVIE_HPP
 #define MOVIE_HPP
-#include "director.hpp"
-#include "starring.hpp"
+#include <vector>
+#include <iostream>
+#include <ctime>
+#include "actor.hpp"
 
 class Director;
 class Starring;
 class Movie{
 public:
 	Movie(Director*);
-	Movie(Director*, std::string);
+	Movie(Director*, const std::string&);
 	~Movie();
 	Movie(const Movie&);
 					
@@ -25,7 +27,7 @@ public:
 	unsigned int getSize()const;
 	std::vector<Starring*> getFilmCast()const;
 
-	void setTitle(const char*);
+	void setTitle(const std::string&);
 	void setReleaseDate(const tm&);
 
 	void insertElement(Starring*);
@@ -50,6 +52,30 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& out, const Movie& x);
+
+inline std::string Movie::getTitle() const {
+	return _title;
+}
+
+inline tm Movie::getReleaseDate() const {
+	return _releaseDate;
+}
+
+inline unsigned int Movie::getSize() const {
+	return _filmCast.size();
+}
+
+inline std::vector<Starring*> Movie::getFilmCast() const {
+	return _filmCast;
+}
+
+inline void Movie::setTitle(const std::string& x) {
+	_title = x;
+}
+
+inline void Movie::setReleaseDate(const tm& x) {
+	_releaseDate = x;
+}
 
 #endif
 

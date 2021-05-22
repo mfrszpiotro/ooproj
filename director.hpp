@@ -12,7 +12,7 @@ class Director : public Actor{
 public:
 	Director();
 
-	Director(const char*, const char*);
+	Director(const std::string&, const std::string&);
 
  //Deletes director, its movies and movies' starrings (last one: modifies movieLists of actors)
 	~Director();
