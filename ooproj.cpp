@@ -197,6 +197,18 @@ int main() {
 	cout << endl << "One of the Actors state at the moment: " << endl;
 	cout << stenka << endl;
 	printMovieList(stenka.getMovieList());
+
+	cout << endl << "Exemplary exceptions: " << endl;
+	try {
+		irishman.insertElement(&ace);
+	} catch (const char* exc) {
+		cerr << exc << endl;
+	}
+	try {
+		godmother.getNthElement(20);
+	} catch (out_of_range exc) {
+		cerr << exc.what() << endl;
+	}
 }
 
 void printReleaseDate(tm& date) {

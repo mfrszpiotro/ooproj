@@ -20,8 +20,8 @@ Movie::Movie(const Movie& src): _filmCast(), _director(src._director), _title(sr
 }
 
 void Movie::insertElement(Starring* x){
-	Movie* tmp = x->getMovie(); // maybe copy element function is needed
-	if (tmp != nullptr && tmp != this) std::cerr << "Movie:insertElement: this starring is already occupied" << std::endl;
+	Movie* tmp = x->getMovie();
+	if (tmp != nullptr && tmp != this) throw "Movie:insertElement: this starring is already occupied";
 	if (x->getActor() != nullptr) {
 		if (x->getActor()->findMovie(this)) x->getActor()->addMovie(this);
 	}
@@ -47,8 +47,8 @@ bool Movie::removeElement(Starring* x){
 	return false;
 }
 
-Starring Movie::getNthElement(int n) {
-	//set range (except.)
+Starring Movie::getNthElement(unsigned int n) {
+	if (n > getSize()) throw out_of_range ("Movie::getNthElement: n-value is out of range");
 	return *_filmCast[n];
 }
 
@@ -84,16 +84,6 @@ void Movie::copyActorStarrings(Actor* _this, Actor* a){
 		Starring* newStar = new Starring(copy->getRole(), copy->getSalary());
 		newStar->link(_this, this);
 	}
-}
-
-void Movie::removeActorStarrings(Actor* a){
-	/*std::vector<Starring*> foundStars = findActorStarrings(a);
-	while (foundStars.size() != 0){
-		foundStars.back()->setActor(nullptr);
-		foundStars.back()->setMovie(nullptr);
-		delete foundStars.back();
-		foundStars.pop_back();
-	}*/
 }
 
 std::vector<Starring*> Movie::findActorStarrings(const Actor* a) const{

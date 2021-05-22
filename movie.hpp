@@ -32,11 +32,10 @@ public:
 
 	void insertElement(Starring*);
 	bool removeElement(Starring*);
-	Starring getNthElement(int);
+	Starring getNthElement(unsigned int);
 	bool findElement(const Starring*) const;
 
 	void copyActorStarrings(Actor* _this, Actor* a);
-	void removeActorStarrings(Actor*);
 	std::vector<Starring*> findActorStarrings(const Actor*)const;
 
 	void copyAllElements(const Movie& src);

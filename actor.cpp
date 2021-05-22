@@ -38,7 +38,6 @@ void Actor::removeMovie(Movie* x) {
 	int place = findMovie(x);
 	if (place != -1) {
 		_movieList[place] = _movieList.back();
-		x->removeActorStarrings(this);
 		_movieList.pop_back();
 	}
 }
@@ -62,7 +61,6 @@ void Actor::disconnectWithAll(){
 	unsigned int size = _movieList.size();
 	for (unsigned int i = 0; i < size; ++i) {
 		Movie* toDisconnect = _movieList[i];
-		toDisconnect->removeActorStarrings(this);
 	}
 	_movieList.clear();
 }

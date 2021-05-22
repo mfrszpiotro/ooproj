@@ -28,7 +28,7 @@ Starring::~Starring(){
         _actor->removeMovie(_movie);
         return;
     }
-    cerr << "Starring::destructor error" << endl;
+    throw "~Starring: destructor error";
 }
 
 Starring::Starring(const Starring& x) : _actor(x._actor), _movie(x._movie), _role(x._role), _salary(x._salary) {
